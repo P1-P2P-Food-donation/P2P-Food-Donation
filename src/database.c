@@ -9,10 +9,10 @@
 struct user* users = {};
 int users_size = 0;
 
-struct user get_user(char* username){
+struct user* get_user(char* username){
     for (int i = 0; i < users_size; ++i) {
         if(strcmp(users[i].username, username) == 0 ){
-            return users[i];
+            return &users[i];
         }
     }
     printf("No user with the username: %s was found", username);

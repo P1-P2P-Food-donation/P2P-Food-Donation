@@ -18,5 +18,5 @@ struct user{
 };
 
 void add_user(char* username, char* password, char* phone_number, int points, enum user_role role);
-struct user get_user(char* username);
+struct user* get_user(char* username);
 void print_users();
