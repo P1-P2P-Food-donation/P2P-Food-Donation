@@ -17,8 +17,6 @@ int checkCredentials(struct user* user, char inputUsername[], char inputPassword
 
     // Scan login credentials
 void scanLoginCredentials(char inputUsername[], char inputPassword[]) {
-    printf("Enter username: ");
-    scanf("%s", inputUsername);
     printf("Enter password: ");
     scanf("%s", inputPassword);
 }
