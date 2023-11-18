@@ -2,9 +2,12 @@
 // Created by feddersen on 14/11/2023.
 //
 #include "database.h"
+#include "login.h"
 #include <string.h>
 
 int main(void){
+    char systemUser[30];
+
     /*
     Adding a user:
         add_user("Victor", "Password", "88888888", 100, role_user);
