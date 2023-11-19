@@ -3,7 +3,6 @@
 //
 
 #include "login.h"
-#define POINTS_START 100
 
 // Check login credentials
 int checkCredentials(struct user* user, char inputUsername[], char inputPassword[]) {
@@ -22,18 +21,29 @@ void scanLoginCredentials(char inputUsername[], char inputPassword[]) {
 }
 
 // Login menu
-void printLoginMenu(char *systemUser) {
-    int choice;
+
+void printLoginMenu(char *systemUser, enum user_role *userRole) {
+    int choice, count = 0;
+    char inputUsername[30];
+
+    while (count == 0) {
+        printf("[1] Login\n");
+        printf("[2] Create user\n");
+        printf("[3] Exit\n");
+
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        // Call the function to handle the action
+        actionLoginMenu(choice, systemUser, userRole, &count);
+    }
+}
+
+// Handle actions from the login menu
+void actionLoginMenu(int choice, char *systemUser, enum user_role *userRole, int *count) {
     char inputUsername[30];
     char inputPassword[30];
-    struct user* loggedInUser;
-
-    printf("[1] Login\n");
-    printf("[2] Create user\n");
-    printf("[3] Exit\n");
-
-    printf("Enter choice: ");
-    scanf("%d", &choice);
+    struct user *loggedInUser;
 
     switch (choice) {
         case 1:
@@ -47,11 +57,13 @@ void printLoginMenu(char *systemUser) {
                 if (loginStatus == 1) {
                     printf("Login successful!\n");
                     strcpy(systemUser, inputUsername);  // Copy the username
+                    *userRole = loggedInUser->role;    // Copy the user role
+                    (*count)++; // Increment count to break the while loop
                 } else {
-                    printf("Login failed. Invalid credentials.\n");
+                    printf("Login failed. Invalid credentials.\n"); // wrong password
                 }
             } else {
-                printf("User not found.\n");
+                printf("User not found.\n"); // User not found
             }
             break;
         case 2:

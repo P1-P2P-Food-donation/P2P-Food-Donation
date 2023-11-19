@@ -6,9 +6,12 @@
 
 int main(void){
     char systemUser[30];
+    enum user_role userRole; // user=1 admin=0
     add_user("Victor", "Password", "88888888", 100, role_user);
-    printLoginMenu(systemUser);
-    printf("%s", systemUser);
+    printLoginMenu(systemUser, &userRole);
+    //printf("%s", systemUser);
+    //printf("%d", userRole);
+
     /*
     Adding a user:
         add_user("Victor", "Password", "88888888", 100, role_user);
@@ -19,4 +22,5 @@ int main(void){
     Printing all users:
         print_users();
      */
+    return 0;
 }
