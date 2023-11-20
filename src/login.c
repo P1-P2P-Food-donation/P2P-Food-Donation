@@ -1,5 +1,5 @@
 //
-// Created by Emil on 16-11-2023.
+// Created by Emil on 17-11-2023.
 //
 
 #include "login.h"
@@ -14,19 +14,21 @@ int checkCredentials(struct user* user, char inputUsername[], char inputPassword
     }
 }
 
-    // Scan login credentials
-void scanLoginCredentials(char inputUsername[], char inputPassword[]) {
+// Scan login credentials
+void scanLoginCredentials(char inputPassword[], char inputUsername[]) {
+    printf("Enter username: ");
+    scanf("%s", inputUsername);
     printf("Enter password: ");
     scanf("%s", inputPassword);
 }
 
+
 // Login menu
-
 void printLoginMenu(char *systemUser, enum user_role *userRole) {
-    int choice, count = 0;
-    char inputUsername[30];
+    int choice;
+    bool isLoggedIn = false;
 
-    while (count == 0) {
+    while (!isLoggedIn) {
         printf("[1] Login\n");
         printf("[2] Create user\n");
         printf("[3] Exit\n");
@@ -35,47 +37,27 @@ void printLoginMenu(char *systemUser, enum user_role *userRole) {
         scanf("%d", &choice);
 
         // Call the function to handle the action
-        actionLoginMenu(choice, systemUser, userRole, &count);
+        isLoggedIn = actionLoginMenu(choice, systemUser, userRole);
     }
 }
 
-// Handle actions from the login menu
-void actionLoginMenu(int choice, char *systemUser, enum user_role *userRole, int *count) {
-    char inputUsername[30];
-    char inputPassword[30];
-    struct user *loggedInUser;
 
+// Handle actions from the login menu
+bool actionLoginMenu(int choice, char *systemUser, enum user_role *userRole) {
     switch (choice) {
         case 1:
             // Login
-            printf("Enter username: ");
-            scanf("%s", inputUsername);
-
-            loggedInUser = get_user(inputUsername); // Get the user by username
-            if (loggedInUser != NULL) {
-                int loginStatus = login(loggedInUser, inputUsername, inputPassword);
-                if (loginStatus == 1) {
-                    printf("Login successful!\n");
-                    strcpy(systemUser, inputUsername);  // Copy the username
-                    *userRole = loggedInUser->role;    // Copy the user role
-                    (*count)++; // Increment count to break the while loop
-                } else {
-                    printf("Login failed. Invalid credentials.\n"); // wrong password
-                }
-            } else {
-                printf("User not found.\n"); // User not found
-            }
-            break;
+            return login(systemUser, userRole);
         case 2:
             // Create user
             createUser();
-            break;
+            return false;  // User not logged in
         case 3:
             // Exit
             exit(0);
         default:
             printf("Invalid choice\n");
-            break;
+            return false;  // User not logged in
     }
 }
 
@@ -94,19 +76,35 @@ void createUser() {
     printf("Enter phone number: ");
     scanf("%s", phone_number);
 
-    // Add user to database
+    // Add user to the database
     add_user(username, password, phone_number, points, role);
 }
 
 // Function to login
-int login(struct user* user, char inputUsername[], char inputPassword[]) {
-    int loginStatus = 0;
+bool login(char *systemUser, enum user_role *userRole) {
+    char inputUsername[30];
+    char inputPassword[30];
+    struct user *loggedInUser;
 
     // Scan login credentials
-    scanLoginCredentials(inputUsername, inputPassword);
+    scanLoginCredentials(inputPassword, inputUsername);
 
-    // Check credentials
-    loginStatus = checkCredentials(user, inputUsername, inputPassword);
+    // Get the user by username
+    loggedInUser = get_user(inputUsername);
 
-    return loginStatus;
+    if (loggedInUser != NULL) {
+        int loginStatus = checkCredentials(loggedInUser, inputUsername, inputPassword);
+        if (loginStatus == 1) {
+            printf("Login successful!\n");
+            strcpy(systemUser, inputUsername);  // Copy the username
+            *userRole = loggedInUser->role;    // Copy the user role
+            return true;  // User logged in
+        } else {
+            printf("Login failed. Invalid credentials.\n"); // wrong password
+        }
+    } else {
+        printf("No user with the username: %s was found\n", inputUsername); // User not found
+    }
+
+    return false;  // User not logged in
 }
