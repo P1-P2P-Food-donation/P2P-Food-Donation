@@ -19,11 +19,9 @@ typedef enum {
 
 
 // Declaring functions
-int check_credentials(struct user* user, char input_username[], char input_password);
+int check_credentials(struct user* user, char input_username[], char input_password[]);
 void scan_login_credentials(char input_password[], char input_username[]);
-void print_login_menu(char *system_user, enum user_role *user_role);
 void create_user();
-bool action_login_menu(int choice, char *system_user, enum user_role *user_role);
 bool login(char *system_user, enum user_role *user_role);
 
 #endif // P2P_FOOD_DONATION_LOGIN_H
