@@ -1,11 +1,18 @@
 //
 // Created by feddersen on 14/11/2023.
 //
-#include "database.h"
-#include <stdio.h>
+
+#include "interface.h"
 #include <string.h>
 
 int main(void){
+    char system_user[30];
+    enum user_role user_role; // user=1 admin=0
+    add_user("Victor", "Password", "88888888", 100, role_user);
+    login_menu_print(system_user, &user_role);
+    //printf("%s", systemUser);
+    //printf("%d", userRole);
+
     /*
     Adding a user:
         add_user("Victor", "Password", "88888888", 100, role_user);
@@ -16,4 +23,5 @@ int main(void){
     Printing all users:
         print_users();
      */
+    return 0;
 }
