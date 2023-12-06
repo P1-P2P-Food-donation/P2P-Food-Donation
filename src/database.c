@@ -34,12 +34,12 @@ void print_timestamp(struct timestamp timestamp){
 
 struct user* get_user(char* username){
     for (int i = 0; i < users_size; ++i) {
-        if(strcmp(users[i].username, username) == 0 ){
+        if (strcmp(users[i].username, username) == 0) {
             return &users[i];
         }
     }
-    printf("No user with the username: %s was found", username);
-    exit(EXIT_FAILURE);
+    //printf("No user with the username: %s was found", username);
+    return NULL; // changed from exit(EXIT_FAILURE);
 }
 
 void print_users(){
