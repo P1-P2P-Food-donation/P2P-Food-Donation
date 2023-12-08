@@ -7,8 +7,8 @@
 #include "string.h"
 #include <time.h>
 
-struct user* users = {};
-struct item* items = {};
+struct user* users;
+struct item* items;
 
 int users_size = 0;
 int items_size = 0;
