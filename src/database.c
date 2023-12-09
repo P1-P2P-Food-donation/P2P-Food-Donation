@@ -7,16 +7,27 @@
 #include "string.h"
 #include <time.h>
 
-struct user* users;
-struct item* items;
+// User and item linked lists
 
-int users_size = 0;
-int items_size = 0;
+struct User_Node {
+    struct user data;
+    struct User_Node* next;
+};
+
+struct Item_Node {
+    struct item data;
+    struct Item_Node* next;
+};
+
+struct User_Node* users = NULL;
+struct Item_Node* items = NULL;
+
+// Timestamp
 
 struct timestamp timestamp_now(){
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
-    int year = tm.tm_year + 1900; //Years since 1900
+    int year = tm.tm_year + 1900; //tm.tm_year is years since 1900
     int month = tm.tm_mon + 1; //Years are zero-based
     int day = tm.tm_mday;
     int hour = tm.tm_hour;
@@ -28,23 +39,66 @@ struct timestamp timestamp_now(){
     return temp_timestamp;
 }
 
-void print_timestamp(struct timestamp timestamp){
-    printf("Current date and time: %04d-%02d-%02d %02d:%02d:%02d\n", timestamp.date.year, timestamp.date.month, timestamp.date.day, timestamp.hour, timestamp.minute, timestamp.seconds);
+struct timestamp create_timestamp(int second, int minute, int hour, int day, int month, int year){
+    struct date d = {year, month, day};
+    struct timestamp t = {d, hour, minute, second};
+    return t;
 }
 
-struct user* get_user(char* username){
-    for (int i = 0; i < users_size; ++i) {
-        if (strcmp(users[i].username, username) == 0) {
-            return &users[i];
-        }
-    }
-    //printf("No user with the username: %s was found", username);
-    return NULL; // changed from exit(EXIT_FAILURE);
+void print_timestamp(struct timestamp timestamp){
+    printf("Timestamp: %02d:%02d:%02d %02d/%02d/%04d\n", timestamp.hour, timestamp.minute, timestamp.seconds, timestamp.date.day, timestamp.date.month, timestamp.date.year);
 }
+
+// Users [PRIVATE]
+
+void import_user_file(){
+
+    FILE* file = fopen("users.csv", "r");
+
+    if(file == NULL){
+        printf("Couldn't open users.csv");
+        exit(EXIT_FAILURE);
+    }
+
+    while(!feof(file)){
+        struct user u;
+        int success_amount = fscanf(file, "%[^,], %[^,], %[^,], %d, %d\n", u.username, u.password, u.phone_number, &u.points, &u.role);
+        if(success_amount != 5){
+            printf("Error importing users.csv, %d", success_amount);
+            exit(EXIT_FAILURE);
+        }
+
+        //Allocate memory and handle out of memory case
+        struct User_Node* new_node = (struct User_Node*) malloc(sizeof(struct User_Node));
+        if(new_node == NULL){
+            printf("Out of memory");
+            exit(EXIT_FAILURE);
+        }
+
+        new_node->data = u;
+        new_node->next = users;
+
+        users = new_node;
+    }
+}
+
+void save_user_to_file(struct user u){
+    FILE* file = fopen("users.csv", "a"); //Open file in append mode
+
+    fprintf(file, "%s, %s, %s, %d, %d\n", u.username, u.password, u.phone_number, u.points, u.role); //Write user to file
+
+    fclose(file); //Close file
+}
+
+// Users [PUBLIC]
 
 void print_users(){
-    for (int i = 0; i < users_size; ++i) {
-        printf("%s\n", users[i].username);
+
+    struct User_Node* rest_users = users;
+
+    while(rest_users != NULL){
+        printf("User: %s\n", rest_users->data.username);
+        rest_users = rest_users->next;
     }
 }
 
@@ -64,16 +118,6 @@ void add_user(char* username, char* password, char* phone_number, int points, en
         exit(EXIT_FAILURE);
     }
 
-    //Allocate memory for a new user array which is 1 bigger than the last.
-    struct user* updated_users = (struct user*)malloc(sizeof(struct user)*(users_size + 1));
-    if(updated_users == NULL){
-        printf("Out of memory");
-        exit(EXIT_FAILURE);
-    }
-    //Copy the items of an old user array to a new.
-    for (int i = 0; i < users_size; ++i) {
-        updated_users[i] = users[i];
-    }
     //Create the new entry
     struct user new_entry;
     strncpy(new_entry.username, username, 30);
@@ -81,27 +125,120 @@ void add_user(char* username, char* password, char* phone_number, int points, en
     strncpy(new_entry.phone_number, phone_number, 15);
     new_entry.points = points;
     new_entry.role = role;
-    updated_users[users_size] = new_entry;
 
-    //Free the memory of the last array
-    if(users_size > 0){
-        free(users);
+    //Allocate memory and handle out of memory case
+    struct User_Node* new_node = (struct User_Node*) malloc(sizeof(struct User_Node));
+    if(new_node == NULL){
+        printf("Out of memory");
+        exit(EXIT_FAILURE);
     }
 
-    //Set the array to the new and updated array and increment the size.
-    users = updated_users;
-    users_size++;
+    //Save user
+    save_user_to_file(new_entry);
+
+    //Create a new node and make it the new head of the linked list
+    new_node->data = new_entry;
+    new_node->next = users;
+    users = new_node;
 }
 
-int get_items_amount(){
-    return items_size;
+void update_user_file(){
+    //Clear file
+    FILE* file = fopen("users.csv", "w");
+    fclose(file);
+
+    //Loop through linked list and add every node to file
+    struct User_Node* rest_users = users;
+    while(rest_users != NULL){
+        save_user_to_file(rest_users->data);
+        rest_users = rest_users->next;
+    }
 }
 
-struct item* get_items(){
-    return items;
+struct user* get_user(char* username){
+
+    struct User_Node* rest_users = users;
+
+    while(rest_users != NULL){
+        //Test if current index of linked list is the user with username
+        if(strcmp(rest_users->data.username, username) == 0){
+            return &rest_users->data;
+        }
+        rest_users = rest_users->next;
+    }
+    return NULL; // No user with that username was found
 }
 
-void add_item(char username[], char title[], char description[], char location[], enum item_category category, int quantity){
+// Items [PRIVATE]
+
+void import_item_file(){
+
+    FILE* file = fopen("items.csv", "r");
+
+    if(file == NULL){
+        printf("Couldn't open items.csv");
+        exit(EXIT_FAILURE);
+    }
+
+    while(!feof(file)){
+        struct item i;
+        struct date d;
+        struct timestamp t;
+
+        char username[30];
+
+        int success_amount = fscanf(file, "%d, %[^,], %[^,], %[^,], %[^,], %d, %d, %d:%d:%d, %d/%d/%d\n", &i.id, username, i.title, i.description, i.location, &i.category, &i.quantity, &t.hour, &t.minute, &t.seconds, &d.day, &d.month, &d.year);
+        if(success_amount != 13){
+            printf("Error importing items.csv, %d", success_amount);
+            exit(EXIT_FAILURE);
+        }
+        t.date = d;
+        i.timestamp = t;
+
+        //Find user
+        struct user* u = get_user(username);
+        if(u == NULL){
+            printf("Error importing items.csv: The user %s was not found", username);
+            exit(EXIT_FAILURE);
+        }
+        i.owner = u;
+
+
+        //Allocate memory and handle out of memory case
+        struct Item_Node* new_node = (struct Item_Node*) malloc(sizeof(struct Item_Node));
+        if(new_node == NULL){
+            printf("Out of memory");
+            exit(EXIT_FAILURE);
+        }
+
+        new_node->data = i;
+        new_node->next = items;
+
+        items = new_node;
+    }
+}
+
+void save_item_to_file(struct item i){
+    FILE* file = fopen("items.csv", "a"); //Open file in append mode
+
+    fprintf(file, "%d, %s, %s, %s, %s, %d, %d, %d:%d:%d, %d/%d/%d\n", i.id, i.owner->username, i.title, i.description, i.location, i.category, i.quantity, i.timestamp.hour, i.timestamp.minute, i.timestamp.seconds, i.timestamp.date.day, i.timestamp.date.month, i.timestamp.date.year);
+
+    fclose(file); //Close file
+}
+
+// Items [PUBLIC]
+
+void print_items(){
+
+    struct Item_Node* rest_items = items;
+
+    while(rest_items != NULL){
+        printf("id: %d\n", rest_items->data.id);
+        rest_items = rest_items->next;
+    }
+}
+
+void add_item(char seller_name[], char title[], char description[], char location[], enum item_category category, int quantity){
 
     if(strlen(title) > 30){
         printf("title can't be longer than 30 characters");
@@ -116,35 +253,57 @@ void add_item(char username[], char title[], char description[], char location[]
         exit(EXIT_FAILURE);
     }
 
-    //Allocate memory for a new items array which is 1 bigger than the last.
-    struct item* updated_items = (struct item*)malloc(sizeof(struct item)*(items_size + 1));
-    if(updated_items == NULL){
-        printf("Out of memory");
-        exit(EXIT_FAILURE);
+    //Find the highest id and store it as highest_id
+    int highest_id = 0;
+    struct Item_Node* rest_items = items;
+
+    while(rest_items != NULL){
+        if(rest_items->data.id > highest_id){
+            highest_id = rest_items->data.id;
+        }
+        rest_items = rest_items->next;
     }
-    //Copy the items of the old array to the new
-    for (int i = 0; i < items_size; ++i) {
-        updated_items[i] = items[i];
-    }
+
+
     //Initialize the new item.
     struct item new_item;
-    new_item.id = items_size;
-    new_item.owner = get_user(username);
+    new_item.id = highest_id + 1;
+    new_item.owner = get_user(seller_name);
     new_item.timestamp = timestamp_now();
     strncpy(new_item.title, title, 30);
     strncpy(new_item.description, description, 100);
     strncpy(new_item.location, location, 100);
     new_item.category = category;
     new_item.quantity = quantity;
-    new_item.bid_amount = 0;
-    updated_items[items_size] = new_item;
 
-    //Free the memory of the last array
-    if(items_size > 0){
-        free(items);
+    //Allocate memory and handle out of memory case
+    struct Item_Node* new_node = (struct Item_Node*) malloc(sizeof(struct Item_Node));
+    if(new_node == NULL){
+        printf("Out of memory");
+        exit(EXIT_FAILURE);
     }
 
-    //Set the array to the new and updated array and increment the size.
-    items = updated_items;
-    items_size++;
+    new_node->data = new_item;
+    new_node->next = items;
+    items = new_node;
+}
+
+void update_item_file(){
+    //Clear file
+    FILE* file = fopen("items.csv", "w");
+    fclose(file);
+
+    //Loop through linked list and add every node to file
+    struct Item_Node* rest_items = items;
+    while(rest_items != NULL){
+        save_item_to_file(rest_items->data);
+        rest_items = rest_items->next;
+    }
+}
+
+// General
+
+void load_data_from_csv(){
+    import_user_file();
+    import_item_file();
 }

@@ -10,3 +10,6 @@ target_link_libraries(main database)
 target_link_libraries(main interface)
 target_link_libraries(login database)
 target_link_libraries(interface login)
+
+#Make libaries available for test dir
+target_include_directories(database PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

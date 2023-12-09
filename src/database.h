@@ -47,20 +47,26 @@ struct item{
     char location[100];
     enum item_category category;
     int quantity;
-    struct bid* bids;
-    int bid_amount;
 };
+
+
 
 //Timestamp
 struct timestamp timestamp_now();
+struct timestamp create_timestamp(int second, int minute, int hour, int day, int month, int year);
 void print_timestamp(struct timestamp timestamp);
 
 //Items
-struct item* get_items();
-int get_items_amount();
+void print_items();
 void add_item(char username[], char title[], char description[], char location[], enum item_category category, int quantity);
+void update_item_file();
 
 //Users
+void print_users();
 void add_user(char* username, char* password, char* phone_number, int points, enum user_role role);
 struct user* get_user(char* username);
-void print_users();
+void update_user_file();
+
+
+//General
+void load_data_from_csv();
