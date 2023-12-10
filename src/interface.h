@@ -16,4 +16,6 @@ struct Menu {
 };
 void printMessage();
 
+void printscan_menu(struct Menu menu[], int size);
+
 #endif //P2P_FOOD_DONATION_INTERFACE_H
