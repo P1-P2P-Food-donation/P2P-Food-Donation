@@ -7,26 +7,14 @@
 
 #endif //P2P_FOOD_DONATION_DATABASE_H
 
+#include "timestamp.h"
+
 enum user_role{role_admin, role_user};
 enum item_category{fruit, vegetable, meat};
 
-struct date{
-    int year;
-    int month;
-    int day;
-};
-
-struct timestamp{
-    struct date date;
-    int hour;
-    int minute;
-    int seconds;
-};
-
 struct bid{
-    int id;
+    int item_id;
     struct user* user;
-    struct timestamp timestamp;
     int amount;
 };
 
@@ -49,12 +37,11 @@ struct item{
     int quantity;
 };
 
+struct Bid_Node {
+    struct bid* data;
+    struct Bid_Node* next;
+};
 
-
-//Timestamp
-struct timestamp timestamp_now();
-struct timestamp create_timestamp(int second, int minute, int hour, int day, int month, int year);
-void print_timestamp(struct timestamp timestamp);
 
 //Items
 void print_items();
@@ -67,6 +54,11 @@ void add_user(char* username, char* password, char* phone_number, int points, en
 struct user* get_user(char* username);
 void update_user_file();
 
+//Bids
+struct Bid_Node* get_bids_with_id(int item_id);
+void add_bid(int item_id, struct user* bidder, int bid_amount);
+void update_bid_file();
+void print_bids();
 
 //General
 void load_data_from_csv();

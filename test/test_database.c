@@ -10,9 +10,9 @@
     print_users();
  */
 
-#include "database.h"
 #include "stdio.h"
 #include "assert.h"
+#include "auction.h"
 
 void test_add_user(){
     add_user("Victor", "Password", "88888888", 100, role_user);
@@ -37,5 +37,11 @@ void test_save_user(){
 
 int main(){
     //print_timestamp(create_timestamp(11,12,13,14,12,1990));
+    load_data_from_csv();
+    print_users();
+    print_bids();
+    printf("Call result: %d\n", make_bid(2, get_user("Victor"), 50));
+    print_users();
+    print_bids();
 }
 

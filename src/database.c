@@ -5,15 +5,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "string.h"
-#include <time.h>
 
 // User and item linked lists
-
 struct User_Node {
     struct user data;
     struct User_Node* next;
 };
-
 struct Item_Node {
     struct item data;
     struct Item_Node* next;
@@ -21,33 +18,7 @@ struct Item_Node {
 
 struct User_Node* users = NULL;
 struct Item_Node* items = NULL;
-
-// Timestamp
-
-struct timestamp timestamp_now(){
-    time_t t = time(NULL);
-    struct tm tm = *localtime(&t);
-    int year = tm.tm_year + 1900; //tm.tm_year is years since 1900
-    int month = tm.tm_mon + 1; //Years are zero-based
-    int day = tm.tm_mday;
-    int hour = tm.tm_hour;
-    int minute = tm.tm_min;
-    int second = tm.tm_sec;
-
-    struct date temp_date = {year, month, day};
-    struct timestamp temp_timestamp = {temp_date, hour, minute, second};
-    return temp_timestamp;
-}
-
-struct timestamp create_timestamp(int second, int minute, int hour, int day, int month, int year){
-    struct date d = {year, month, day};
-    struct timestamp t = {d, hour, minute, second};
-    return t;
-}
-
-void print_timestamp(struct timestamp timestamp){
-    printf("Timestamp: %02d:%02d:%02d %02d/%02d/%04d\n", timestamp.hour, timestamp.minute, timestamp.seconds, timestamp.date.day, timestamp.date.month, timestamp.date.year);
-}
+struct Bid_Node* bids = NULL;
 
 // Users [PRIVATE]
 
@@ -96,10 +67,12 @@ void print_users(){
 
     struct User_Node* rest_users = users;
 
+    printf("USERS\n");
     while(rest_users != NULL){
-        printf("User: %s\n", rest_users->data.username);
+        printf("User: %s, Points: %d\n", rest_users->data.username, rest_users->data.points);
         rest_users = rest_users->next;
     }
+    printf("\n\n");
 }
 
 void add_user(char* username, char* password, char* phone_number, int points, enum user_role role){
@@ -182,17 +155,15 @@ void import_item_file(){
 
     while(!feof(file)){
         struct item i;
-        struct date d;
         struct timestamp t;
 
         char username[30];
 
-        int success_amount = fscanf(file, "%d, %[^,], %[^,], %[^,], %[^,], %d, %d, %d:%d:%d, %d/%d/%d\n", &i.id, username, i.title, i.description, i.location, &i.category, &i.quantity, &t.hour, &t.minute, &t.seconds, &d.day, &d.month, &d.year);
+        int success_amount = fscanf(file, "%d, %[^,], %[^,], %[^,], %[^,], %d, %d, %d:%d:%d, %d/%d/%d\n", &i.id, username, i.title, i.description, i.location, &i.category, &i.quantity, &t.hour, &t.minute, &t.seconds, &t.day, &t.month, &t.year);
         if(success_amount != 13){
             printf("Error importing items.csv, %d", success_amount);
             exit(EXIT_FAILURE);
         }
-        t.date = d;
         i.timestamp = t;
 
         //Find user
@@ -221,7 +192,7 @@ void import_item_file(){
 void save_item_to_file(struct item i){
     FILE* file = fopen("items.csv", "a"); //Open file in append mode
 
-    fprintf(file, "%d, %s, %s, %s, %s, %d, %d, %d:%d:%d, %d/%d/%d\n", i.id, i.owner->username, i.title, i.description, i.location, i.category, i.quantity, i.timestamp.hour, i.timestamp.minute, i.timestamp.seconds, i.timestamp.date.day, i.timestamp.date.month, i.timestamp.date.year);
+    fprintf(file, "%d, %s, %s, %s, %s, %d, %d, %d:%d:%d, %d/%d/%d\n", i.id, i.owner->username, i.title, i.description, i.location, i.category, i.quantity, i.timestamp.hour, i.timestamp.minute, i.timestamp.seconds, i.timestamp.day, i.timestamp.month, i.timestamp.year);
 
     fclose(file); //Close file
 }
@@ -276,6 +247,9 @@ void add_item(char seller_name[], char title[], char description[], char locatio
     new_item.category = category;
     new_item.quantity = quantity;
 
+    //Save to file
+    save_item_to_file(new_item);
+
     //Allocate memory and handle out of memory case
     struct Item_Node* new_node = (struct Item_Node*) malloc(sizeof(struct Item_Node));
     if(new_node == NULL){
@@ -301,9 +275,134 @@ void update_item_file(){
     }
 }
 
+// Bids [PRIVATE]
+void import_bid_file(){
+
+    FILE* file = fopen("bids.csv", "r");
+
+    if(file == NULL){
+        printf("Couldn't open bids.csv");
+        exit(EXIT_FAILURE);
+    }
+
+    while(!feof(file)){
+        //Scan line from file
+        struct bid* b = (struct bid*)malloc(sizeof(struct bid));
+        char username[30];
+        int success_amount = fscanf(file, "%d, %[^,], %d\n", &b->item_id, username, &b->amount);
+        if(success_amount != 3){
+            printf("Error importing bids.csv");
+            exit(EXIT_FAILURE);
+        }
+
+        //Gets user from username
+        struct user* u = get_user(username);
+        if(u == NULL){
+            printf("Error importing bid because username %s doesn't exist", username);
+            exit(EXIT_FAILURE);
+        }
+        b->user = u;
+
+        //Allocate memory and handle out of memory case
+        struct Bid_Node* new_node = (struct Bid_Node*) malloc(sizeof(struct Bid_Node));
+        if(new_node == NULL){
+            printf("Out of memory");
+            exit(EXIT_FAILURE);
+        }
+
+        //printf("%s, %d", b->user->username, b->item_id);
+
+        //Add the new node to the head of the linked list
+        new_node->data = b;
+        new_node->next = bids;
+        bids = new_node;
+    }
+}
+
+void save_bid_to_file(struct bid b){
+    FILE* file = fopen("bids.csv", "a"); //Open file in append mode
+
+    fprintf(file, "%d, %s, %d\n", b.item_id, b.user->username, b.amount);
+
+    fclose(file); //Close file
+}
+
+// Bids [PUBLIC]
+/**
+ * Returns true if bid was successful and false if the bid was not successful
+ */
+void add_bid(int item_id, struct user* bidder, int bid_amount){
+
+    //struct bid b = {item_id, bidder, bid_amount};
+    struct bid* b = (struct bid*) malloc(sizeof(struct bid));
+    if(b == NULL){
+        printf("Out of memory");
+        exit(EXIT_FAILURE);
+    }
+    b->item_id = item_id;
+    b->user = bidder;
+    b->amount = bid_amount;
+
+    //Add to bids.csv
+    save_bid_to_file(*b);
+
+    //Add bid to linked list
+    struct Bid_Node* new_node = (struct Bid_Node*) malloc(sizeof(struct Bid_Node));
+    if(new_node == NULL){
+        printf("Out of memory");
+        exit(EXIT_FAILURE);
+    }
+
+    //Add bid to the head of the linked list
+    new_node->data = b;
+    new_node->next = bids;
+    bids = new_node;
+}
+
+struct Bid_Node* get_bids_with_id(int item_id){
+    struct Bid_Node* linked_list = NULL;
+    struct Bid_Node* index = bids;
+    while(index != NULL){
+        if(index->data->item_id == item_id){
+            struct Bid_Node* new_node = (struct Bid_Node*) malloc(sizeof(struct Bid_Node));
+            new_node->data = index->data;
+            new_node->next = linked_list;
+            linked_list = new_node;
+            //printf("%s, %d", linked_list->data->user->username, linked_list->data->item_id);
+        }
+        index = index->next;
+    }
+    return linked_list;
+}
+
+void update_bid_file(){
+    //Clear file
+    FILE* file = fopen("bids.csv", "w");
+    fclose(file);
+
+    //Loop through linked list and add every node to file
+    struct Bid_Node* rest_items = bids;
+    while(rest_items != NULL){
+        save_bid_to_file(*rest_items->data);
+        rest_items = rest_items->next;
+    }
+}
+
+void print_bids(){
+    struct Bid_Node* rest_bids = bids;
+
+    printf("BIDS\n");
+    while(rest_bids != NULL){
+        printf("%d %s %d\n", rest_bids->data->item_id, rest_bids->data->user->username, rest_bids->data->amount);
+        rest_bids = rest_bids->next;
+    }
+    printf("\n\n");
+}
+
 // General
 
 void load_data_from_csv(){
     import_user_file();
     import_item_file();
+    import_bid_file();
 }
