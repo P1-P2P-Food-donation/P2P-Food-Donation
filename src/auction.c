@@ -5,8 +5,30 @@
 #include "auction.h"
 #include "stdio.h"
 
+// Returns the winning bid
+struct bid* get_highest_bid(int item_id){
+    struct Bid_Node* index = get_bids_with_id(item_id);
+    struct bid* champion = NULL;
+    //Make sure that champion contains the highest bid
+    while(index != NULL){
+        if(champion == NULL || index->data->amount > champion->amount){
+            champion = index->data;
+        }
+        index = index->next;
+    }
+    return champion;
+}
 
+// Returns 1 if bid was placed successfully or 0 if an error occurred
 int make_bid(int item_id, struct user* bidder, int bid_amount){
+
+    //Check to see if bid is higher than the highest bid
+    struct bid* highest_bid = get_highest_bid(item_id);
+    if(highest_bid != NULL){
+        if(bid_amount <= highest_bid->amount){
+            printf("A higher bid has already been place: %d, your bid was only: %d", highest_bid->amount, bid_amount);
+        }
+    }
 
     int required_amount = bid_amount;
 

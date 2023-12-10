@@ -42,10 +42,9 @@ struct Bid_Node {
     struct Bid_Node* next;
 };
 
-
 //Items
 void print_items();
-void add_item(char username[], char title[], char description[], char location[], enum item_category category, int quantity);
+void add_item(char seller_name[], char title[], char description[], char location[], enum item_category category, int quantity, struct timestamp end_time);
 void update_item_file();
 
 //Users

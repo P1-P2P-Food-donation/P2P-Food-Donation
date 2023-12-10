@@ -8,18 +8,15 @@
 
 #define ENTRIES_IN_TIMESTAMP 6
 
-struct timestamp timestamp_now(){
+struct timestamp timestamp_delta(int delta){
     time_t t = time(NULL);
-    struct tm tm = *localtime(&t);
-    int year = tm.tm_year + 1900; //tm.tm_year is years since 1900
-    int month = tm.tm_mon + 1; //Years are zero-based
-    int day = tm.tm_mday;
-    int hour = tm.tm_hour;
-    int minute = tm.tm_min;
-    int second = tm.tm_sec;
+    t += delta;
+    struct tm* tm = localtime(&t);
+    return create_timestamp(tm->tm_sec, tm->tm_min, tm->tm_hour, tm->tm_mday, tm->tm_mon + 1, tm->tm_year + 1900);
+}
 
-    struct timestamp return_timestamp = {year, month, day, hour, minute, second};
-    return return_timestamp;
+struct timestamp timestamp_now(){
+    return timestamp_delta(0);
 }
 
 struct timestamp create_timestamp(int second, int minute, int hour, int day, int month, int year){

@@ -209,7 +209,7 @@ void print_items(){
     }
 }
 
-void add_item(char seller_name[], char title[], char description[], char location[], enum item_category category, int quantity){
+void add_item(char seller_name[], char title[], char description[], char location[], enum item_category category, int quantity, struct timestamp end_time){
 
     if(strlen(title) > 30){
         printf("title can't be longer than 30 characters");
@@ -240,7 +240,7 @@ void add_item(char seller_name[], char title[], char description[], char locatio
     struct item new_item;
     new_item.id = highest_id + 1;
     new_item.owner = get_user(seller_name);
-    new_item.timestamp = timestamp_now();
+    new_item.timestamp = end_time;
     strncpy(new_item.title, title, 30);
     strncpy(new_item.description, description, 100);
     strncpy(new_item.location, location, 100);
@@ -400,7 +400,6 @@ void print_bids(){
 }
 
 // General
-
 void load_data_from_csv(){
     import_user_file();
     import_item_file();

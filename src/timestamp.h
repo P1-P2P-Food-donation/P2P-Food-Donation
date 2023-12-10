@@ -20,3 +20,4 @@ struct timestamp timestamp_now();
 struct timestamp create_timestamp(int second, int minute, int hour, int day, int month, int year);
 void print_timestamp(struct timestamp timestamp);
 int cmp_timestamp(struct timestamp t1, struct timestamp t2);
+struct timestamp timestamp_delta(int delta);
