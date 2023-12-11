@@ -46,7 +46,14 @@ int main(){
     print_bids();
      */
 
-    print_timestamp(timestamp_now());
-    print_timestamp(timestamp_delta(-2*60));
+
+
+    load_data_from_csv();
+
+    print_users();
+    print_items();
+    print_bids();
+    //printf("Return: %d\n", delete_user("Victor"));
+
 }
 

@@ -7,10 +7,6 @@
 #include "string.h"
 
 // User and item linked lists
-struct User_Node {
-    struct user data;
-    struct User_Node* next;
-};
 struct Item_Node {
     struct item data;
     struct Item_Node* next;
@@ -19,6 +15,12 @@ struct Item_Node {
 struct User_Node* users = NULL;
 struct Item_Node* items = NULL;
 struct Bid_Node* bids = NULL;
+
+//Function headers
+void delete_bid_id(int item_id);
+void delete_bid_username(char username[]);
+
+/* - - - - - - - USERS - - - - - - - - -*/
 
 // Users [PRIVATE]
 
@@ -72,7 +74,7 @@ void print_users(){
         printf("User: %s, Points: %d\n", rest_users->data.username, rest_users->data.points);
         rest_users = rest_users->next;
     }
-    printf("\n\n");
+    printf("\n");
 }
 
 void add_user(char* username, char* password, char* phone_number, int points, enum user_role role){
@@ -142,6 +144,42 @@ struct user* get_user(char* username){
     return NULL; // No user with that username was found
 }
 
+int delete_user(char username[]){
+    struct User_Node* index = users;
+    struct User_Node* previous_index = NULL;
+    while (index != NULL){
+        if (strcmp(index->data.username, username) == 0){
+
+            //Delete all items with username
+            struct Item_Node* user_items = get_items_from_user(username);
+            while(user_items != NULL){
+                delete_bid_username(username);
+                delete_item(user_items->data.id);
+
+                struct Item_Node* next_item = user_items->next;
+                free(user_items);
+                user_items = next_item;
+            }
+
+            //Delete user with username
+            if(previous_index == NULL){
+                users = index->next;
+            } else {
+                previous_index->next = index->next;
+            }
+            free(index);
+            update_user_file();
+
+            return 1;
+        }
+        previous_index = index;
+        index = index->next;
+    }
+    return 0;
+}
+
+/* - - - - - - - ITEMS - - - - - - - - -*/
+
 // Items [PRIVATE]
 
 void import_item_file(){
@@ -203,10 +241,12 @@ void print_items(){
 
     struct Item_Node* rest_items = items;
 
+    printf("ITEMS:\n");
     while(rest_items != NULL){
-        printf("id: %d\n", rest_items->data.id);
+        printf("ID: %d, Username: %s, Title: %s \n", rest_items->data.id, rest_items->data.owner->username, rest_items->data.title);
         rest_items = rest_items->next;
     }
+    printf("\n");
 }
 
 void add_item(char seller_name[], char title[], char description[], char location[], enum item_category category, int quantity, struct timestamp end_time){
@@ -274,6 +314,46 @@ void update_item_file(){
         rest_items = rest_items->next;
     }
 }
+
+struct Item_Node* get_items_from_user(char username[]){
+    struct Item_Node* linked_list = NULL;
+    struct Item_Node* index = items;
+    while(index != NULL){
+        if(strcmp(index->data.owner->username, username) == 0){
+            struct Item_Node* new_node = (struct Item_Node*) malloc(sizeof(struct Item_Node));
+            new_node->data = index->data;
+            new_node->next = linked_list;
+            linked_list = new_node;
+        }
+        index = index->next;
+    }
+    return linked_list;
+}
+
+// Returns 1 if item was deleted and 0 if item was not found
+int delete_item(int item_id){
+    struct Item_Node* index = items;
+    struct Item_Node* previous_index = NULL;
+    while (index != NULL){
+        if (index->data.id == item_id){
+            if(previous_index == NULL){
+                items = index->next;
+            } else {
+                previous_index->next = index->next;
+            }
+            delete_bid_id(item_id);
+            free(index);
+            update_item_file();
+            return 1;
+        }
+        previous_index = index;
+        index = index->next;
+    }
+    update_item_file();
+    return 0;
+}
+
+/* - - - - - - - BIDS - - - - - - - - -*/
 
 // Bids [PRIVATE]
 void import_bid_file(){
@@ -399,7 +479,62 @@ void print_bids(){
     printf("\n\n");
 }
 
-// General
+void delete_bid_id(int item_id){
+    struct Bid_Node* index = bids;
+    struct Bid_Node* previous_index = NULL;
+    while (index != NULL){
+        if (index->data->item_id == item_id){
+            if(previous_index == NULL){
+                bids = index->next;
+            } else {
+                previous_index->next = index->next;
+            }
+
+            index->data->user->points += index->data->amount;
+
+            free(index);
+
+            update_bid_file();
+            update_user_file();
+
+            delete_bid_id(item_id);
+            return;
+        }
+        previous_index = index;
+        index = index->next;
+    }
+    update_bid_file();
+}
+
+void delete_bid_username(char username[]){
+    struct Bid_Node* index = bids;
+    struct Bid_Node* previous_index = NULL;
+    while (index != NULL){
+        if (strcmp(index->data->user->username, username) == 0){
+            if(previous_index == NULL){
+                bids = index->next;
+            } else {
+                previous_index->next = index->next;
+            }
+
+            index->data->user->points += index->data->amount;
+
+            free(index);
+
+            update_bid_file();
+            update_user_file();
+
+            delete_bid_username(username);
+            return;
+        }
+        previous_index = index;
+        index = index->next;
+    }
+    update_bid_file();
+}
+
+/* - - - - - - - GENERAL - - - - - - - - -*/
+
 void load_data_from_csv(){
     import_user_file();
     import_item_file();

@@ -42,16 +42,24 @@ struct Bid_Node {
     struct Bid_Node* next;
 };
 
+struct User_Node {
+    struct user data;
+    struct User_Node* next;
+};
+
 //Items
 void print_items();
 void add_item(char seller_name[], char title[], char description[], char location[], enum item_category category, int quantity, struct timestamp end_time);
 void update_item_file();
+struct Item_Node* get_items_from_user(char username[]);
+int delete_item(int item_id);
 
 //Users
 void print_users();
 void add_user(char* username, char* password, char* phone_number, int points, enum user_role role);
 struct user* get_user(char* username);
 void update_user_file();
+int delete_user(char username[]);
 
 //Bids
 struct Bid_Node* get_bids_with_id(int item_id);
