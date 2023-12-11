@@ -6,6 +6,7 @@
 #include "input_data.h"
 #include <string.h>
 
+
 int main(void){
     char system_user[30];
     enum user_role user_role; // user=1 admin=0
