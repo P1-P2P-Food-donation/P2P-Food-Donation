@@ -15,9 +15,10 @@ void input_items(){
     char title[30];
     char description[100];
     char location[100];
-    enum item_category category;
+    char category;
+    int quantity;
     openfile("items.txt");
-    while(fscanf(file, "%s %s %s %s %d", username, title, description, location, &category) != EOF){
+    while(fscanf(file, "%s,%s,%s,%s,%s,%d", username, title, description, location, &category, quantity) != EOF){
         add_item(username, title, description, location, category, 1);
     }
     closefile();
