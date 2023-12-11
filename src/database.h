@@ -59,6 +59,7 @@ void print_timestamp(struct timestamp timestamp);
 struct item* get_items();
 int get_items_amount();
 void add_item(char username[], char title[], char description[], char location[], enum item_category category, int quantity);
+void print_items();
 
 //Users
 void add_user(char* username, char* password, char* phone_number, int points, enum user_role role);
