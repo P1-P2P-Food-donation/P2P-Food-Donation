@@ -15,11 +15,11 @@ void input_items(){
     char title[30];
     char description[100];
     char location[100];
-    char category;
+    char category[30];
     int quantity;
     openfile("items.txt");
     while(fscanf(file, "%s,%s,%s,%s,%s,%d", username, title, description, location, &category, quantity) != EOF){
-        add_item(username, title, description, location, category, 1);
+        add_item(username, title, description, location, category, quantity);
     }
     closefile();
 }
@@ -28,7 +28,7 @@ void input_users(){
     char password[30];
     char phone_number[15];
     int points;
-    enum user_role role;
+    char user_role[30];
     openfile("users.txt");
     while(fscanf(file, "%s %s %s %d %d", username, password, phone_number, &points, &role) != EOF){
         add_user(username, password, phone_number, points, role);
