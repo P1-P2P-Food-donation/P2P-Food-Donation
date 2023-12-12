@@ -535,8 +535,10 @@ void delete_bid_username(char username[]){
 
 /* - - - - - - - GENERAL - - - - - - - - -*/
 
+
 void load_data_from_csv(){
     import_user_file();
     import_item_file();
     import_bid_file();
 }
+

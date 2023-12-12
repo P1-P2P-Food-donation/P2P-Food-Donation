@@ -1,8 +1,21 @@
 //
-// Created by Emil on 27-11-2023.
+// Created by Nicolai on 10-12-2023.
 //
 
 #include "interface.h"
+
+void printscan_menu(struct Menu menu[], int size) {
+    int valg = 0;
+
+    for (int i = 1; i <= 2; i++) {
+        printf("[%d] %s\n", i, menu[i-1].string);
+    }
+    printf("[%d] Exit", size);
+
+    scanf("%d", &valg);
+
+    menu[valg-1].function();
+}
 
 // Function for the login menu
 void login_menu_print(char *system_user, enum user_role *user_role) {
