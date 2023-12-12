@@ -7,26 +7,14 @@
 
 #endif //P2P_FOOD_DONATION_DATABASE_H
 
+#include "timestamp.h"
+
 enum user_role{role_admin, role_user};
 enum item_category{fruit, vegetable, meat};
 
-struct date{
-    int year;
-    int month;
-    int day;
-};
-
-struct timestamp{
-    struct date date;
-    int hour;
-    int minute;
-    int seconds;
-};
-
 struct bid{
-    int id;
+    int item_id;
     struct user* user;
-    struct timestamp timestamp;
     int amount;
 };
 
@@ -47,21 +35,38 @@ struct item{
     char location[100];
     enum item_category category;
     int quantity;
-    struct bid* bids;
-    int bid_amount;
 };
 
-//Timestamp
-struct timestamp timestamp_now();
-void print_timestamp(struct timestamp timestamp);
+struct Bid_Node {
+    struct bid* data;
+    struct Bid_Node* next;
+};
+
+struct User_Node {
+    struct user data;
+    struct User_Node* next;
+};
 
 //Items
-struct item* get_items();
-int get_items_amount();
-void add_item(char username[], char title[], char description[], char location[], enum item_category category, int quantity);
+
 void print_items();
+void add_item(char seller_name[], char title[], char description[], char location[], enum item_category category, int quantity, struct timestamp end_time);
+void update_item_file();
+struct Item_Node* get_items_from_user(char username[]);
+int delete_item(int item_id);
 
 //Users
+void print_users();
 void add_user(char* username, char* password, char* phone_number, int points, enum user_role role);
 struct user* get_user(char* username);
-void print_users();
+void update_user_file();
+int delete_user(char username[]);
+
+//Bids
+struct Bid_Node* get_bids_with_id(int item_id);
+void add_bid(int item_id, struct user* bidder, int bid_amount);
+void update_bid_file();
+void print_bids();
+
+//General
+void load_data_from_csv();

@@ -19,10 +19,12 @@ int main(void){
 
     char system_user[30];
     enum user_role user_role; // user=1 admin=0
+
     read_data();
     print_items();
     print_users();
     add_user("Victor", "Password", "88888888", 100, role_user);
+
     login_menu_print(system_user, &user_role);
     //printf("%s", systemUser);
     //printf("%d", userRole);
