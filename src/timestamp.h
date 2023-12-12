@@ -5,8 +5,6 @@
 #ifndef P2P_FOOD_DONATION_TIME_H
 #define P2P_FOOD_DONATION_TIME_H
 
-#endif //P2P_FOOD_DONATION_TIME_H
-
 struct timestamp{
     int year;
     int month;
@@ -21,3 +19,6 @@ struct timestamp create_timestamp(int second, int minute, int hour, int day, int
 void print_timestamp(struct timestamp timestamp);
 int cmp_timestamp(struct timestamp t1, struct timestamp t2);
 struct timestamp timestamp_delta(int delta);
+int auctionise_item_scan();
+
+#endif //P2P_FOOD_DONATION_TIME_H

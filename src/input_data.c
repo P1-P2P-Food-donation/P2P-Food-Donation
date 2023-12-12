@@ -62,7 +62,7 @@ enum item_category category_from_string(const char *category_str) {
     // Add more conditions as needed
     return fruit; // Default to FRUIT if unknown
 }
-
+/*
 void read_and_add_items() {
     FILE* file = openfile("items");
 
@@ -85,3 +85,4 @@ void read_and_add_items() {
 
     fclose(file);
 }
+ */

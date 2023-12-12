@@ -11,6 +11,8 @@
 
 #define POINTS_START 100
 
+extern struct user* current_user;
+
 // Defining boolean values
 typedef enum {
     false,

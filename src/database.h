@@ -5,11 +5,9 @@
 #ifndef P2P_FOOD_DONATION_DATABASE_H
 #define P2P_FOOD_DONATION_DATABASE_H
 
-#endif //P2P_FOOD_DONATION_DATABASE_H
-
 #include "timestamp.h"
 
-enum user_role{role_admin, role_user};
+enum user_role{role_user, role_admin};
 enum item_category{fruit, vegetable, meat};
 
 struct bid{
@@ -70,3 +68,5 @@ void print_bids();
 
 //General
 void load_data_from_csv();
+
+#endif //P2P_FOOD_DONATION_DATABASE_H

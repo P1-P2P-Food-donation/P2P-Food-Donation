@@ -12,9 +12,9 @@ bool login_menu_helper(int choice, char *system_user, enum user_role *user_role)
 
 struct Menu {
     char* string;
-    void (*function)();
+    int (*function)();
 };
-void printMessage();
+int printMessage();
 
 void printscan_menu(struct Menu menu[], int size);
 

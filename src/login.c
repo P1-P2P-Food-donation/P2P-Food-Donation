@@ -4,6 +4,8 @@
 
 #include "login.h"
 
+struct user* current_user = NULL;
+
 // Function to check login credentials
 int check_credentials(struct user* user, char input_username[], char input_password[]) {
     // Compare input with user struct values
@@ -37,35 +39,35 @@ void create_user() {
     printf("Enter phone number: ");
     scanf("%s", phone_number);
 
+    if(get_user(username) != NULL){
+        printf("A user with that username already exist. Try again\n");
+        return 0;
+    }
+
     // Add user to the database
     add_user(username, password, phone_number, points, role);
 }
 
 // Function to handle the login process
-bool login(char *system_user, enum user_role *user_role) {
+int login() {
     char input_username[30];
     char input_password[30];
-    struct user *logged_in_user;
 
     // Scan login credentials
     scan_login_credentials(input_password, input_username);
 
     // Get the user by username
-    logged_in_user = get_user(input_username);
+    struct user* u = get_user(input_username);
 
-    if (logged_in_user != NULL) {
-        int login_status = check_credentials(logged_in_user, input_username, input_password);
-        if (login_status == 1) {
+    if(u != NULL){
+        if (strcmp(u->password, input_password) == 0){
+            current_user = u;
             printf("Login successful!\n");
-            strcpy(system_user, input_username);  // Copy the username
-            *user_role = logged_in_user->role;    // Copy the user role
-            return true;  // User logged in
-        } else {
-            printf("Login failed. Invalid credentials.\n"); // wrong password
+            return 1;
         }
-    } else {
-        printf("No user with the username: %s was found\n", input_username); // User not found
     }
 
-    return false;  // User not logged in
+    printf("Login failed. Invalid credentials.\n"); // wrong username or password
+    return 0;
+
 }

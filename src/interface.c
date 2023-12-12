@@ -4,17 +4,32 @@
 
 #include "interface.h"
 
-void printscan_menu(struct Menu menu[], int size) {
-    int valg = 0;
+int printscan_menu(struct menu_item menu[], int size) {
+    int valid_choice;
+    do {
+        int valg;
 
     for (int i = 1; i <= 2; i++) {
         printf("[%d] %s\n", i, menu[i-1].string);
     }
     printf("[%d] Exit", size);
 
-    scanf("%d", &valg);
+        scanf("%d", &valg);
 
-    menu[valg-1].function();
+        valid_choice = (valg >= 1 && valg <= size);
+
+        if (valid_choice) {
+            if(menu[valg-1].function()){
+                return 0;
+            };
+
+        } else if (valg == size + 1){
+            return 1;
+        }
+        else {
+            printf("Invalid choice! Try again\n");
+        }
+    } while (1);
 }
 
 // Function for the login menu
