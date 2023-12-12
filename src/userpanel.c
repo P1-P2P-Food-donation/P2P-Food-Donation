@@ -2,30 +2,24 @@
 // Created by Jeppe Nyland Mortensen on 29/11/2023.
 //
 
-#include "stdbool.h"
 #include "stddef.h"
+#include "stdlib.h"
 #include "stdio.h"
+#include "interface.h"
+//#include "buy_and_sell.h"
+#include "login.h"
+#include "auction.h"
 #include "interface.h"
 
 
-struct Menu* create_userpanel() {
-    struct Menu *user_panel = malloc(2 * sizeof(struct Menu));
-    if (user_panel == NULL) {
-        printf("Out of memory!");
-        return NULL;
-    }
-
-    struct Menu menu1, menu2;
-
-    menu1.string = "Login";
-    menu1.function = &printMessage;
-    user_panel[0] = menu1;
-
-    menu2.string = "Create user";
-    menu2.function = &printMessage;
-    user_panel[1] = menu2;
-
-    return user_panel;
+int auktion_menu() {
+    const int menu_size = 1;
+    struct menu_item menu[2] = {
+            {"Auctionise item", &auctionise_item_scan},
+            {"Make a bid", &make_bid_scan}
+    };
+    printscan_menu(menu, 2);
+    return 0;
 }
 
 void user_menu() {

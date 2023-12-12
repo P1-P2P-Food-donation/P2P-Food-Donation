@@ -10,7 +10,6 @@ add_library(timestamp timestamp.c)
 add_library(auction auction.c)
 add_library(input_data input_data.c)
 
-
 target_link_libraries(main database)
 target_link_libraries(main interface)
 target_link_libraries(main input_data)

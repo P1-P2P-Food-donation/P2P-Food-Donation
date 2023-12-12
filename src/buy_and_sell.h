@@ -5,7 +5,7 @@
 #ifndef MERGESORT_BUY_AND_SELL_H
 #define MERGESORT_BUY_AND_SELL_H
 
-int sell_food(char username[]);
-int buy_food(char username[]);
+int sell_food();
+int buy_food();
 
 #endif //MERGESORT_BUY_AND_SELL_H

@@ -25,7 +25,7 @@ void scan_login_credentials(char input_password[], char input_username[]) {
 }
 
 // Function to create a new user
-void create_user() {
+int create_user() {
     char username[30];
     char password[30];
     char phone_number[15];
@@ -46,6 +46,9 @@ void create_user() {
 
     // Add user to the database
     add_user(username, password, phone_number, points, role);
+
+    current_user = get_user(username);
+    return 1;
 }
 
 // Function to handle the login process

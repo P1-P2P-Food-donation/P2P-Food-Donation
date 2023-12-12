@@ -3,16 +3,17 @@
 //
 
 #include "buy_and_sell.h"
-#include "database.h"
+#include "login.h"
 
 #include <stdio.h>
 
-int sell_food(char username[]) {
+
+
+int sell_food() {
     char* title;
     char* location;
     char description[5];
     int quantity = 1;
-
 
     printf("Write the title of your product:\n");
     scanf("%s", title);
@@ -39,7 +40,6 @@ int sell_food(char username[]) {
             case meat:
                 printf("%d: Meat", i);
             default:
-                return 0;
                 break;
         }
     }
@@ -51,24 +51,25 @@ int sell_food(char username[]) {
             break;
         case vegetable:
             category = vegetable;
+            break;
         case meat:
             category = meat;
         default:
-            return 0;
             break;
     }
 
-    add_item(username, title, description, location, category, quantity);
-    return 1;
+    add_item(current_user->username, title, description, location, category, quantity, timestamp_now());
+    return 0;
 }
 
-int buy_food(char username[]) {
-    char* title;
+int buy_food() {
+    int id;
 
+    print_items();
 
-    printf("Write the title of the food you want to buy:\n");
-    scanf("%s", title);
+    printf("Write the id of the food you want to buy:\n");
+    scanf("%d", &id);
 
-    add_item(username, title, description, location, category, quantity);
-    return 1;
+    delete_item(id);
+    return 0;
 }

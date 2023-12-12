@@ -80,11 +80,11 @@ void print_users(){
 void add_user(char* username, char* password, char* phone_number, int points, enum user_role role){
 
     //Checks if username, password and phone_number are strings of acceptable sizes.
-    if(strlen(username) > 30){
+    if(strlen(username) > USERNAME_SIZE){
         printf("username cant be bigger than 29 characters");
         exit(EXIT_FAILURE);
     }
-    if(strlen(password) > 30){
+    if(strlen(password) > USERNAME_SIZE){
         printf("password cant be bigger than 29 characters");
         exit(EXIT_FAILURE);
     }
@@ -95,8 +95,8 @@ void add_user(char* username, char* password, char* phone_number, int points, en
 
     //Create the new entry
     struct user new_entry;
-    strncpy(new_entry.username, username, 30);
-    strncpy(new_entry.password, password, 30);
+    strncpy(new_entry.username, username, USERNAME_SIZE);
+    strncpy(new_entry.password, password, USERNAME_SIZE);
     strncpy(new_entry.phone_number, phone_number, 15);
     new_entry.points = points;
     new_entry.role = role;
@@ -195,7 +195,7 @@ void import_item_file(){
         struct item i;
         struct timestamp t;
 
-        char username[30];
+        char username[USERNAME_SIZE];
 
         int success_amount = fscanf(file, "%d, %[^,], %[^,], %[^,], %[^,], %d, %d, %d:%d:%d, %d/%d/%d\n", &i.id, username, i.title, i.description, i.location, &i.category, &i.quantity, &t.hour, &t.minute, &t.seconds, &t.day, &t.month, &t.year);
         if(success_amount != 13){
@@ -251,8 +251,8 @@ void print_items(){
 
 void add_item(char seller_name[], char title[], char description[], char location[], enum item_category category, int quantity, struct timestamp end_time){
 
-    if(strlen(title) > 30){
-        printf("title can't be longer than 30 characters");
+    if(strlen(title) > USERNAME_SIZE){
+        printf("title can't be longer than USERNAME_SIZE characters");
         exit(EXIT_FAILURE);
     }
     if(strlen(description) > 100){
@@ -281,7 +281,7 @@ void add_item(char seller_name[], char title[], char description[], char locatio
     new_item.id = highest_id + 1;
     new_item.owner = get_user(seller_name);
     new_item.timestamp = end_time;
-    strncpy(new_item.title, title, 30);
+    strncpy(new_item.title, title, USERNAME_SIZE);
     strncpy(new_item.description, description, 100);
     strncpy(new_item.location, location, 100);
     new_item.category = category;
@@ -368,7 +368,7 @@ void import_bid_file(){
     while(!feof(file)){
         //Scan line from file
         struct bid* b = (struct bid*)malloc(sizeof(struct bid));
-        char username[30];
+        char username[USERNAME_SIZE];
         int success_amount = fscanf(file, "%d, %[^,], %d\n", &b->item_id, username, &b->amount);
         if(success_amount != 3){
             printf("Error importing bids.csv");

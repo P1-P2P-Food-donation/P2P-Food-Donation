@@ -7,6 +7,8 @@
 
 #include "timestamp.h"
 
+#define USERNAME_SIZE 30
+
 enum user_role{role_user, role_admin};
 enum item_category{fruit, vegetable, meat};
 
@@ -46,7 +48,6 @@ struct User_Node {
 };
 
 //Items
-
 void print_items();
 void add_item(char seller_name[], char title[], char description[], char location[], enum item_category category, int quantity, struct timestamp end_time);
 void update_item_file();

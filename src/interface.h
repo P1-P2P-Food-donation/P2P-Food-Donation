@@ -5,17 +5,16 @@
 #ifndef P2P_FOOD_DONATION_INTERFACE_H
 #define P2P_FOOD_DONATION_INTERFACE_H
 
-#include "login.h"
-
-void login_menu_print(char *system_user, enum user_role *user_role);
-bool login_menu_helper(int choice, char *system_user, enum user_role *user_role);
-
-struct Menu {
+struct menu_item {
     char* string;
     int (*function)();
 };
 int printMessage();
 
-void printscan_menu(struct Menu menu[], int size);
+int printscan_menu(struct menu_item menu[], int size);
+
+int delete_user_scan();
+int delete_item_scan();
+int make_bid_scan();
 
 #endif //P2P_FOOD_DONATION_INTERFACE_H
