@@ -148,3 +148,9 @@ void add_item(char username[], char title[], char description[], char location[]
     items = updated_items;
     items_size++;
 }
+
+void print_items(){
+    for (int i = 0; i < items_size; ++i) {
+        printf("%s\n", items[i].title);
+    }
+}
