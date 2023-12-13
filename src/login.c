@@ -18,9 +18,9 @@ int check_credentials(struct user* user, char input_username[], char input_passw
 
 // Function to scan login credentials
 void scan_login_credentials(char input_password[], char input_username[]) {
-    printf("Enter username: ");
+    printf("Enter username: \n");
     scanf("%s", input_username);
-    printf("Enter password: ");
+    printf("Enter password: \n");
     scanf("%s", input_password);
 }
 

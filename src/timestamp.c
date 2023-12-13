@@ -25,7 +25,7 @@ struct timestamp create_timestamp(int second, int minute, int hour, int day, int
 }
 
 void print_timestamp(struct timestamp timestamp){
-    printf("Timestamp: %02d:%02d:%02d %02d/%02d/%04d\n", timestamp.hour, timestamp.minute, timestamp.seconds, timestamp.day, timestamp.month, timestamp.year);
+    printf("%02d:%02d:%02d %02d/%02d/%04d", timestamp.hour, timestamp.minute, timestamp.seconds, timestamp.day, timestamp.month, timestamp.year);
 }
 
 /**

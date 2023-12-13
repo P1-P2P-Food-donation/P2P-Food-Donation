@@ -4,6 +4,7 @@
 
 #include "auction.h"
 #include "stdio.h"
+#include "strings.h"
 
 // Returns the winning bid
 struct bid* get_highest_bid(int item_id){
@@ -25,8 +26,9 @@ int make_bid(int item_id, struct user* bidder, int bid_amount){
     //Check to see if bid is higher than the highest bid
     struct bid* highest_bid = get_highest_bid(item_id);
     if(highest_bid != NULL){
-        if(bid_amount <= highest_bid->amount){
-            printf("A higher bid has already been place: %d, your bid was only: %d", highest_bid->amount, bid_amount);
+        if(bid_amount <= highest_bid->amount && strcmp(highest_bid->user->username, bidder->username) != 0){
+            printf("A higher or equal bid of %d has already been placed by %s", highest_bid->amount, highest_bid->user->username);
+            return 0;
         }
     }
 
@@ -43,7 +45,7 @@ int make_bid(int item_id, struct user* bidder, int bid_amount){
 
             //Fail if new bid is lower than existing bid
             if(required_amount < 0){
-                printf("Bid is invalid because you already have a higher bid (new bid: %d < old bid %d)\n", bid_amount, linked_list->data->amount);
+                printf("Bid is invalid because you already have placed a higher bid (new bid: %d < old bid %d)\n", bid_amount, linked_list->data->amount);
                 return 0;
             }
 
@@ -56,6 +58,8 @@ int make_bid(int item_id, struct user* bidder, int bid_amount){
     if(required_amount > bidder->points){
         printf("Insufficient funds. You need: %d to make this bid\n", required_amount - bidder->points);
         return 0;
+    } else {
+        printf("Bid was placed successfully\n");
     }
 
     //Update previous bid or make new

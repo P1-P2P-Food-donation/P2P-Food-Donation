@@ -49,6 +49,7 @@ struct User_Node {
 
 //Items
 void print_items();
+void print_unexpired_items();
 void add_item(char seller_name[], char title[], char description[], char location[], enum item_category category, int quantity, struct timestamp end_time);
 void update_item_file();
 struct Item_Node* get_items_from_user(char username[]);

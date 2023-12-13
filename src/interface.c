@@ -47,7 +47,12 @@ int delete_item_scan() {
     printf("Type the ID of the item you want to delete:\n");
     scanf("%d", &id);
 
-    return delete_item(id);
+    int delete_item_check = delete_item(id);
+    if (delete_item_check){
+        printf("Item %d was removed\n", id);
+    } else {
+        printf("Item %d was not found\n", id);
+    }
 }
 
 int delete_user_scan() {
@@ -72,10 +77,29 @@ int make_bid_scan() {
     printf("Enter the item you want to bid on:\n");
     scanf("%d", &item_id);
 
-    printf("Enter the bid amount:\n");
+    struct bid* highest_bid = get_highest_bid(item_id);
+    if(highest_bid == NULL){
+        printf("No other bid has been placed yet\n");
+    } else {
+        printf("The current highest bid is %d by %s\n", highest_bid->amount, highest_bid->user->username);
+    }
+
+    printf("How much do you want to bid on this item?:\n");
     scanf("%d", &bid_amount);
 
-    //make_bid(item_id, current_user, bid_amount);
+    make_bid(item_id, current_user, bid_amount);
+
+    return 0;
+}
+
+int print_all_users(){
+    print_users();
+    return 0;
+}
+
+int print_all_unexpired_items(){
+    print_unexpired_items();
+    return 0;
 }
 
 int auctionise_item_scan(){

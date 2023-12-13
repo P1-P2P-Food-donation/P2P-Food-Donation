@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "string.h"
+#include "auction.h"
 
 // User and item linked lists
 struct Item_Node {
@@ -71,7 +72,7 @@ void print_users(){
 
     printf("USERS\n");
     while(rest_users != NULL){
-        printf("User: %s, Points: %d\n", rest_users->data.username, rest_users->data.points);
+        printf("Username: %s, Points: %d\n", rest_users->data.username, rest_users->data.points);
         rest_users = rest_users->next;
     }
     printf("\n");
@@ -243,7 +244,49 @@ void print_items(){
 
     printf("ITEMS:\n");
     while(rest_items != NULL){
-        printf("ID: %d, Username: %s, Title: %s \n", rest_items->data.id, rest_items->data.owner->username, rest_items->data.title);
+        printf("ID: %d, Username: %s, Title: %s, Description: %s \n", rest_items->data.id, rest_items->data.owner->username, rest_items->data.title, rest_items->data.description);
+        rest_items = rest_items->next;
+    }
+    printf("\n");
+}
+
+void print_unexpired_items(){
+
+    struct Item_Node* rest_items = items;
+
+    printf("ITEMS:\n");
+    while(rest_items != NULL){
+
+        //Only print unexpired items
+        if(cmp_timestamp(timestamp_now(), rest_items->data.timestamp) != -1){
+            rest_items = rest_items->next;
+            continue;
+        }
+
+        char category_string[20];
+        switch(rest_items->data.category){
+            case(fruit):
+                strcpy(category_string, "Fruit");
+                break;
+            case(meat):
+                strcpy(category_string, "Meat");
+                break;
+            case(vegetable):
+                strcpy(category_string, "Vegetable");
+                break;
+        }
+
+        printf("ID: %d, Username: %s, Title: %s, Description: %s, Category: %s, Auction expiration: ", rest_items->data.id, rest_items->data.owner->username, rest_items->data.title, rest_items->data.description, category_string);
+
+        print_timestamp(rest_items->data.timestamp);
+
+        //Include the highest bid
+        struct bid* highest_bid = get_highest_bid(rest_items->data.id);
+        if(highest_bid != NULL){
+            printf(", Highest bid: %d by %s", highest_bid->amount, highest_bid->user->username);
+        }
+        printf("\n");
+
         rest_items = rest_items->next;
     }
     printf("\n");
