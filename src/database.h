@@ -16,6 +16,7 @@ struct bid{
     int item_id;
     struct user* user;
     int amount;
+    int claimed;
 };
 
 struct user{
@@ -37,6 +38,7 @@ struct item{
     int quantity;
 };
 
+//Bid, user and item linked lists
 struct Bid_Node {
     struct bid* data;
     struct Bid_Node* next;
@@ -47,12 +49,19 @@ struct User_Node {
     struct User_Node* next;
 };
 
+struct Item_Node {
+    struct item data;
+    struct Item_Node* next;
+};
+
 //Items
 void print_items();
 void print_unexpired_items();
 void add_item(char seller_name[], char title[], char description[], char location[], enum item_category category, int quantity, struct timestamp end_time);
 void update_item_file();
 struct Item_Node* get_items_from_user(char username[]);
+void free_item_node(struct Item_Node* i);
+struct Item_Node* get_items_with_bids_by_user(char username[]);
 int delete_item(int item_id);
 
 //Users
@@ -67,6 +76,8 @@ struct Bid_Node* get_bids_with_id(int item_id);
 void add_bid(int item_id, struct user* bidder, int bid_amount);
 void update_bid_file();
 void print_bids();
+struct Bid_Node* get_all_bids();
+void update_claim_status();
 
 //General
 void load_data_from_csv();

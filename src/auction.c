@@ -23,11 +23,15 @@ struct bid* get_highest_bid(int item_id){
 // Returns 1 if bid was placed successfully or 0 if an error occurred
 int make_bid(int item_id, struct user* bidder, int bid_amount){
 
+    if (bid_amount < 0){
+        printf("You can't place a negative bid\n");
+    }
+
     //Check to see if bid is higher than the highest bid
     struct bid* highest_bid = get_highest_bid(item_id);
     if(highest_bid != NULL){
         if(bid_amount <= highest_bid->amount && strcmp(highest_bid->user->username, bidder->username) != 0){
-            printf("A higher or equal bid of %d has already been placed by %s", highest_bid->amount, highest_bid->user->username);
+            printf("A higher or equal bid of %d has already been placed by %s\n", highest_bid->amount, highest_bid->user->username);
             return 0;
         }
     }
@@ -75,3 +79,4 @@ int make_bid(int item_id, struct user* bidder, int bid_amount){
     }
     return 1;
 }
+

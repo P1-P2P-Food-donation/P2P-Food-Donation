@@ -110,6 +110,8 @@ int auctionise_item_scan(){
     int quantity;
     struct timestamp t;
 
+    printf("Please dont use dots instead of commas and avoid language specific characters\n");
+
     clear_input_buffer();
     printf("Item title: ");
     scanf("%[^\n]", item_title);
@@ -128,5 +130,79 @@ int auctionise_item_scan(){
     add_item(current_user->username, item_title, item_description, item_location, category - 1, quantity, t);
 
     printf("\nYour item has been added to the auction. The auction wil expire in 6 hours\n");
+    return 0;
+}
+
+int display_points(){
+    printf("You have %d points\n\n", current_user->points);
+    return 0;
+}
+
+void print_bidding_auctions(){
+    struct Item_Node* index = get_items_with_bids_by_user(current_user->username);
+    printf("Auctions with your bids\n");
+    if(index != NULL){
+        do{
+            //Check if auction has ended
+            struct bid* highest_bid = get_highest_bid(index->data.id);
+            if(cmp_timestamp(timestamp_now(), index->data.timestamp) == 1){
+                if(strcmp(highest_bid->user->username, current_user->username) == 0){
+                    printf("(WIN) id: %d, title: %s : You won this auction. Seller '%s' can be contacted with phone-number: %s\n",index->data.id, index->data.title, index->data.owner->username, index->data.owner->phone_number);
+                } else {
+                    printf("(LOSS) id: %d, title: %s : You lost this auction. Winner was %s with a bid of %d\n",index->data.id, index->data.title, highest_bid->user->username, highest_bid->amount);
+                }
+            } else {
+                printf("(RUNNING) id: %d, title: %s : Highest bid so far is %d from %s\n", index->data.id, index->data.title, highest_bid->amount, highest_bid->user->username);
+            }
+
+            index = index->next;
+        } while (index != NULL);
+    } else {
+        printf("*You haven't bid on any items*\n");
+    }
+
+}
+void print_own_auctions(){
+    struct Item_Node* own_auctions = get_items_from_user(current_user->username);
+    printf("Your auctions:\n");
+    if(own_auctions != NULL){
+        do{
+            //Check if auction has ended
+            if(cmp_timestamp(timestamp_now(), own_auctions->data.timestamp) == 1){
+                printf("(ENDED) id: %d, title: %s : ", own_auctions->data.id, own_auctions->data.title);
+                struct bid* b = get_highest_bid(own_auctions->data.id);
+                //Check if any user have placed a bet
+                if(b == NULL){
+                    printf("this auction ended without any bidders\n");
+                } else {
+                    printf("%s placed the highest bid of %d, their phone-number is %s\n", b->user->username, b->amount, b->user->phone_number);
+                }
+            } else {
+                printf("(RUNNING) id: %d, title: %s : ", own_auctions->data.id, own_auctions->data.title);
+
+                struct bid* b = get_highest_bid(own_auctions->data.id);
+                if(b == NULL){
+                    printf("this auction has no bidders yet\n");
+                } else {
+                    printf("highest bid is %d by user: %s\n", b->amount, b->user->username);
+                }
+            }
+            own_auctions = own_auctions->next;
+        }while(own_auctions != NULL);
+        free(own_auctions);
+    } else {
+        printf("*You don't have any auctions*\n");
+    }
+}
+
+
+int my_auction_and_bids(){
+
+    update_claim_status();
+    print_own_auctions();
+    printf("\n");
+    print_bidding_auctions();
+    printf("\n");
+
     return 0;
 }

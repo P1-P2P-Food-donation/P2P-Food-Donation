@@ -32,11 +32,11 @@ int create_user() {
     int points = POINTS_START;
     enum user_role role = role_user;
 
-    printf("Enter username: ");
+    printf("Enter username:\n");
     scanf("%s", username);
-    printf("Enter password: ");
+    printf("Enter password:\n");
     scanf("%s", password);
-    printf("Enter phone number: ");
+    printf("Enter phone number:\n");
     scanf("%s", phone_number);
 
     if(get_user(username) != NULL){

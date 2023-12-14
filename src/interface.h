@@ -19,5 +19,7 @@ int make_bid_scan();
 int auctionise_item_scan();
 int print_all_users();
 int print_all_unexpired_items();
+int my_auction_and_bids();
+int display_points();
 
 #endif //P2P_FOOD_DONATION_INTERFACE_H

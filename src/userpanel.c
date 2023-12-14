@@ -13,12 +13,14 @@
 
 
 int auktion_menu() {
-    struct menu_item menu[3] = {
-            {"Auctionise item", &auctionise_item_scan},
+    struct menu_item menu[5] = {
             {"List items", &print_all_unexpired_items},
-            {"Make a bid", &make_bid_scan}
+            {"Make a bid", &make_bid_scan},
+            {"Auction item", &auctionise_item_scan},
+            {"Display points", &display_points},
+            {"My auctions/bids", &my_auction_and_bids},
     };
-    printscan_menu(menu, 3);
+    printscan_menu(menu, 5);
     return 0;
 }
 

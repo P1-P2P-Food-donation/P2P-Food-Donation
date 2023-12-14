@@ -7,12 +7,6 @@
 #include "string.h"
 #include "auction.h"
 
-// User and item linked lists
-struct Item_Node {
-    struct item data;
-    struct Item_Node* next;
-};
-
 struct User_Node* users = NULL;
 struct Item_Node* items = NULL;
 struct Bid_Node* bids = NULL;
@@ -345,6 +339,67 @@ void add_item(char seller_name[], char title[], char description[], char locatio
     items = new_node;
 }
 
+struct item* get_item_from_id(int item_id){
+    struct Item_Node* index = items;
+    while(index != NULL){
+        if(index->data.id == item_id){
+            return &index->data;
+        }
+        index = index->next;
+    }
+    return NULL;
+}
+
+struct Item_Node* get_items_with_bids_by_user(char username[]){
+
+    struct Item_Node* i = NULL;
+
+    struct Bid_Node* index = bids;
+
+    while(index != NULL){
+
+        if(strcmp(index->data->user->username, username) == 0 ){
+            struct Item_Node* new_node = (struct Item_Node*) malloc(sizeof(struct Item_Node));
+            new_node->data = *get_item_from_id(bids->data->item_id);
+            new_node->next = i;
+            i = new_node;
+        }
+
+        index = index->next;
+    }
+
+    return i;
+}
+
+void update_claim_status(){
+
+    struct Item_Node* i = items;
+    while(i != NULL){
+
+        //If auction has expired
+        if(cmp_timestamp(timestamp_now(), i->data.timestamp) == 1){
+            struct Bid_Node* b = get_bids_with_id(i->data.id);
+
+            while(b != NULL){
+                b->data->claimed = 1;
+                b = b->next;
+            }
+
+        }
+
+        i = i->next;
+    }
+    update_bid_file();
+}
+
+void free_item_node(struct Item_Node* i){
+    while(i != NULL){
+        struct Item_Node* temp_i = i->next;
+        free(i);
+        i = temp_i;
+    }
+}
+
 void update_item_file(){
     //Clear file
     FILE* file = fopen("items.csv", "w");
@@ -412,8 +467,8 @@ void import_bid_file(){
         //Scan line from file
         struct bid* b = (struct bid*)malloc(sizeof(struct bid));
         char username[USERNAME_SIZE];
-        int success_amount = fscanf(file, "%d, %[^,], %d\n", &b->item_id, username, &b->amount);
-        if(success_amount != 3){
+        int success_amount = fscanf(file, "%d, %[^,], %d, %d\n", &b->item_id, username, &b->amount, &b->claimed);
+        if(success_amount != 4){
             printf("Error importing bids.csv");
             exit(EXIT_FAILURE);
         }
@@ -445,7 +500,7 @@ void import_bid_file(){
 void save_bid_to_file(struct bid b){
     FILE* file = fopen("bids.csv", "a"); //Open file in append mode
 
-    fprintf(file, "%d, %s, %d\n", b.item_id, b.user->username, b.amount);
+    fprintf(file, "%d, %s, %d, %d\n", b.item_id, b.user->username, b.amount, b.claimed);
 
     fclose(file); //Close file
 }
@@ -465,6 +520,7 @@ void add_bid(int item_id, struct user* bidder, int bid_amount){
     b->item_id = item_id;
     b->user = bidder;
     b->amount = bid_amount;
+    b->claimed = 0;
 
     //Add to bids.csv
     save_bid_to_file(*b);
