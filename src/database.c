@@ -24,7 +24,11 @@ void delete_bid_username(char username[]);
 /* - - - - - - - USERS - - - - - - - - -*/
 
 // Users [PRIVATE]
-
+/**
+ * This function is used to import user data from a file.
+ * It reads the file line by line and creates a new user node for each line.
+ * Each user node is added to the global linked list of users.
+ */
 void import_user_file(){
 
     FILE* file = fopen("users.csv", "r");
@@ -56,6 +60,12 @@ void import_user_file(){
     }
 }
 
+/**
+ * This function is used to save a user to a file.
+ * It opens the file in append mode and writes the user data to the file.
+ *
+ * @param u The user to be saved to the file.
+ */
 void save_user_to_file(struct user u){
     FILE* file = fopen("users.csv", "a"); //Open file in append mode
 
@@ -65,7 +75,10 @@ void save_user_to_file(struct user u){
 }
 
 // Users [PUBLIC]
-
+/**
+ * This function is used to print all users.
+ * It iterates over the global linked list of users and prints each user's username and points.
+ */
 void print_users(){
 
     struct User_Node* rest_users = users;
@@ -78,6 +91,17 @@ void print_users(){
     printf("\n");
 }
 
+/**
+ * This function is used to add a new user.
+ * It creates a new user node and adds it to the global linked list of users.
+ * It also saves the new user to a file.
+ *
+ * @param username The username of the new user.
+ * @param password The password of the new user.
+ * @param phone_number The phone number of the new user.
+ * @param points The initial points of the new user.
+ * @param role The role of the new user.
+ */
 void add_user(char* username, char* password, char* phone_number, int points, enum user_role role){
 
     //Checks if username, password and phone_number are strings of acceptable sizes.
@@ -118,6 +142,10 @@ void add_user(char* username, char* password, char* phone_number, int points, en
     users = new_node;
 }
 
+/**
+ * This function is used to update the user file.
+ * It clears the file and then writes all users from the global linked list to the file.
+ */
 void update_user_file(){
     //Clear file
     FILE* file = fopen("users.csv", "w");
@@ -131,6 +159,13 @@ void update_user_file(){
     }
 }
 
+/**
+ * This function is used to get a user by their username.
+ * It iterates over the global linked list of users and returns the user with the matching username.
+ *
+ * @param username The username of the user to be retrieved.
+ * @return Returns a pointer to the user if found, NULL otherwise.
+ */
 struct user* get_user(char* username){
 
     struct User_Node* rest_users = users;
@@ -145,6 +180,14 @@ struct user* get_user(char* username){
     return NULL; // No user with that username was found
 }
 
+/**
+ * This function is used to delete a user by their username.
+ * It iterates over the global linked list of users and removes the user with the matching username.
+ * It also updates the user file after the deletion.
+ *
+ * @param username The username of the user to be deleted.
+ * @return Returns 1 if the user was deleted successfully, 0 otherwise.
+ */
 int delete_user(char username[]){
     struct User_Node* index = users;
     struct User_Node* previous_index = NULL;
@@ -182,7 +225,11 @@ int delete_user(char username[]){
 /* - - - - - - - ITEMS - - - - - - - - -*/
 
 // Items [PRIVATE]
-
+/**
+ * This function is used to import item data from a file.
+ * It reads the file line by line and creates a new item node for each line.
+ * Each item node is added to the global linked list of items.
+ */
 void import_item_file(){
 
     FILE* file = fopen("items.csv", "r");
@@ -228,6 +275,12 @@ void import_item_file(){
     }
 }
 
+/**
+ * This function is used to save an item to a file.
+ * It opens the file in append mode and writes the item data to the file.
+ *
+ * @param i The item to be saved to the file.
+ */
 void save_item_to_file(struct item i){
     FILE* file = fopen("items.csv", "a"); //Open file in append mode
 
@@ -237,7 +290,10 @@ void save_item_to_file(struct item i){
 }
 
 // Items [PUBLIC]
-
+/**
+ * This function is used to print all items.
+ * It iterates over the global linked list of items and prints each item's ID, username, title, and description.
+ */
 void print_items(){
 
     struct Item_Node* rest_items = items;
@@ -250,6 +306,10 @@ void print_items(){
     printf("\n");
 }
 
+/**
+ * This function is used to print all unexpired items.
+ * It iterates over the global linked list of items and prints each unexpired item's details.
+ */
 void print_unexpired_items(){
 
     struct Item_Node* rest_items = items;
@@ -292,6 +352,19 @@ void print_unexpired_items(){
     printf("\n");
 }
 
+/**
+ * This function is used to add a new item.
+ * It creates a new item and adds it to the global linked list of items.
+ * It also saves the new item to a file.
+ *
+ * @param seller_name The username of the seller.
+ * @param title The title of the item.
+ * @param description The description of the item.
+ * @param location The location of the item.
+ * @param category The category of the item.
+ * @param quantity The quantity of the item.
+ * @param end_time The end time of the item.
+ */
 void add_item(char seller_name[], char title[], char description[], char location[], enum item_category category, int quantity, struct timestamp end_time){
 
     if(strlen(title) > USERNAME_SIZE){
@@ -345,6 +418,10 @@ void add_item(char seller_name[], char title[], char description[], char locatio
     items = new_node;
 }
 
+/**
+ * This function is used to update the item file.
+ * It clears the file and then writes all items from the global linked list to the file.
+ */
 void update_item_file(){
     //Clear file
     FILE* file = fopen("items.csv", "w");
@@ -358,6 +435,14 @@ void update_item_file(){
     }
 }
 
+/**
+ * This function is used to get all items from a specific user.
+ * It iterates over the global linked list of items and adds each item with the matching username to a new linked list.
+ * The new linked list is returned.
+ *
+ * @param username The username of the user whose items are to be retrieved.
+ * @return Returns a linked list of items for the specified user.
+ */
 struct Item_Node* get_items_from_user(char username[]){
     struct Item_Node* linked_list = NULL;
     struct Item_Node* index = items;
@@ -373,7 +458,14 @@ struct Item_Node* get_items_from_user(char username[]){
     return linked_list;
 }
 
-// Returns 1 if item was deleted and 0 if item was not found
+/**
+ * This function is used to delete an item by its ID.
+ * It iterates over the global linked list of items and removes the item with the matching ID.
+ * It also updates the item file after the deletion.
+ *
+ * @param item_id The ID of the item to be deleted.
+ * @return Returns 1 if the item was deleted successfully, 0 otherwise.
+ */
 int delete_item(int item_id){
     struct Item_Node* index = items;
     struct Item_Node* previous_index = NULL;
@@ -399,6 +491,11 @@ int delete_item(int item_id){
 /* - - - - - - - BIDS - - - - - - - - -*/
 
 // Bids [PRIVATE]
+/**
+ * This function is used to import bid data from a file.
+ * It reads the file line by line and creates a new bid for each line.
+ * Each bid is added to the global linked list of bids.
+ */
 void import_bid_file(){
 
     FILE* file = fopen("bids.csv", "r");
@@ -442,6 +539,12 @@ void import_bid_file(){
     }
 }
 
+/**
+ * This function is used to save a bid to a file.
+ * It opens the file in append mode and writes the bid data to the file.
+ *
+ * @param b The bid to be saved to the file.
+ */
 void save_bid_to_file(struct bid b){
     FILE* file = fopen("bids.csv", "a"); //Open file in append mode
 
@@ -452,8 +555,17 @@ void save_bid_to_file(struct bid b){
 
 // Bids [PUBLIC]
 /**
- * Returns true if bid was successful and false if the bid was not successful
- */
+* This function is used to add a bid to an item.
+* It first allocates memory for a new bid and checks if the allocation was successful.
+* It then sets the item ID, bidder, and bid amount for the new bid.
+* The new bid is saved to the bids.csv file.
+* A new node is created for the bid and added to the head of the global linked list of bids.
+*
+* @param item_id The ID of the item on which the bid is being placed.
+* @param bidder The user who is placing the bid.
+* @param bid_amount The amount of the bid being placed.
+* Returns true if bid was successful and false if the bid was not successful
+*/
 void add_bid(int item_id, struct user* bidder, int bid_amount){
 
     //struct bid b = {item_id, bidder, bid_amount};
@@ -482,6 +594,15 @@ void add_bid(int item_id, struct user* bidder, int bid_amount){
     bids = new_node;
 }
 
+
+/**
+ * This function is used to get all bids with a specific item ID.
+ * It iterates over the global linked list of bids and adds each bid with the matching item ID to a new linked list.
+ * The new linked list is returned.
+ *
+ * @param item_id The ID of the item for which the bids are to be retrieved.
+ * @return Returns a linked list of bids for the specified item.
+ */
 struct Bid_Node* get_bids_with_id(int item_id){
     struct Bid_Node* linked_list = NULL;
     struct Bid_Node* index = bids;
@@ -498,6 +619,11 @@ struct Bid_Node* get_bids_with_id(int item_id){
     return linked_list;
 }
 
+/**
+ * This function is used to update the bids.csv file.
+ * It first clears the file.
+ * It then iterates over the global linked list of bids and writes each bid to the file.
+ */
 void update_bid_file(){
     //Clear file
     FILE* file = fopen("bids.csv", "w");
@@ -511,6 +637,10 @@ void update_bid_file(){
     }
 }
 
+/**
+ * This function is used to print all bids.
+ * It iterates over the global linked list of bids and prints the item ID, username of the bidder, and bid amount for each bid.
+ */
 void print_bids(){
     struct Bid_Node* rest_bids = bids;
 
@@ -522,6 +652,13 @@ void print_bids(){
     printf("\n\n");
 }
 
+/**
+ * This function is used to delete a bid by its item ID.
+ * It iterates over the global linked list of bids and removes the bid with the matching item ID.
+ * It also updates the bid file and the user file after the deletion.
+ *
+ * @param item_id The ID of the item for which the bid is to be deleted.
+ */
 void delete_bid_id(int item_id){
     struct Bid_Node* index = bids;
     struct Bid_Node* previous_index = NULL;
@@ -549,6 +686,13 @@ void delete_bid_id(int item_id){
     update_bid_file();
 }
 
+/**
+ * This function is used to delete a bid by the username of the bidder.
+ * It iterates over the global linked list of bids and removes the bid placed by the user with the matching username.
+ * It also updates the bid file and the user file after the deletion.
+ *
+ * @param username The username of the user whose bid is to be deleted.
+ */
 void delete_bid_username(char username[]){
     struct Bid_Node* index = bids;
     struct Bid_Node* previous_index = NULL;
@@ -578,7 +722,10 @@ void delete_bid_username(char username[]){
 
 /* - - - - - - - GENERAL - - - - - - - - -*/
 
-
+/**
+ * This function is used to load data from CSV files.
+ * It calls the functions to import users, items, and bids from their respective CSV files.
+ */
 void load_data_from_csv(){
     import_user_file();
     import_item_file();
