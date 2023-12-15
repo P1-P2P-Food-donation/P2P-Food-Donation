@@ -6,7 +6,15 @@
 
 struct user* current_user = NULL;
 
-// Function to check login credentials
+/**
+ * This function is used to check the login credentials of a user.
+ * It compares the input username and password with the username and password of the user.
+ *
+ * @param user The user whose credentials are to be checked.
+ * @param input_username The input username to be checked.
+ * @param input_password The input password to be checked.
+ * @return Returns 1 if the login credentials are correct, 0 otherwise.
+ */
 int check_credentials(struct user* user, char input_username[], char input_password[]) {
     // Compare input with user struct values
     if (strcmp(input_username, user->username) == 0 && strcmp(input_password, user->password) == 0) {
@@ -16,7 +24,13 @@ int check_credentials(struct user* user, char input_username[], char input_passw
     }
 }
 
-// Function to scan login credentials
+/**
+ * This function is used to scan the login credentials from the user.
+ * It prompts the user to enter their username and password and stores them in the provided variables.
+ *
+ * @param input_password The variable in which to store the input password.
+ * @param input_username The variable in which to store the input username.
+ */
 void scan_login_credentials(char input_password[], char input_username[]) {
     printf("Enter username: \n");
     scanf("%s", input_username);
@@ -24,7 +38,13 @@ void scan_login_credentials(char input_password[], char input_username[]) {
     scanf("%s", input_password);
 }
 
-// Function to create a new user
+/**
+ * This function is used to create a new user.
+ * It prompts the user to enter their username, password, and phone number.
+ * It then adds the new user to the database and sets them as the current user.
+ *
+ * @return Returns 1 if the user was created successfully, 0 otherwise.
+ */
 int create_user() {
     char username[30];
     char password[30];
@@ -51,7 +71,13 @@ int create_user() {
     return 1;
 }
 
-// Function to handle the login process
+/**
+ * This function is used to handle the login process.
+ * It prompts the user to enter their login credentials and checks them against the database.
+ * If the login credentials are correct, it sets the user as the current user.
+ *
+ * @return Returns 1 if the login was successful, 0 otherwise.
+ */
 int login() {
     char input_username[30];
     char input_password[30];

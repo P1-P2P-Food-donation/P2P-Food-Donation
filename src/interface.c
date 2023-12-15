@@ -8,11 +8,27 @@
 #include "auction.h"
 #include "login.h"
 
+/**
+ * This function is used to clear the input buffer.
+ * It reads characters from the input buffer until it encounters a newline character ('\n') or the end of file (EOF).
+ * This is useful in scenarios where you want to ensure that any leftover characters from previous input operations do not interfere with future input operations.
+ */
 void clear_input_buffer(){
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
+/**
+ * This function is used to print a menu and scan the user's choice.
+ * It takes in an array of menu items and the size of the array.
+ * Each menu item consists of a string and a function pointer.
+ * The function prints each menu item and then scans the user's choice.
+ * It then calls the function corresponding to the user's choice.
+ *
+ * @param menu The array of menu items.
+ * @param size The size of the array.
+ * @return Returns an integer status code.
+ */
 int printscan_menu(struct menu_item menu[], int size) {
     int valid_choice;
     do {
@@ -41,6 +57,12 @@ int printscan_menu(struct menu_item menu[], int size) {
     } while (1);
 }
 
+/**
+ * This function is used to scan the ID of an item to be deleted.
+ * It then calls the delete_item function with the scanned ID.
+ *
+ * @return Returns an integer status code.
+ */
 int delete_item_scan() {
     int id = 0;
 
@@ -55,6 +77,12 @@ int delete_item_scan() {
     }
 }
 
+/**
+ * This function is used to scan the username of a user to be deleted.
+ * It then calls the delete_user function with the scanned username.
+ *
+ * @return Returns an integer status code.
+ */
 int delete_user_scan() {
     char username[USERNAME_SIZE];
 
@@ -70,6 +98,13 @@ int delete_user_scan() {
     return 0;
 }
 
+/**
+ * This function is used to scan the details of a bid to be placed.
+ * It scans the item ID, the bidder, and the bid amount.
+ * It then calls the make_bid function with the scanned details.
+ *
+ * @return Returns an integer status code.
+ */
 int make_bid_scan() {
 
     int item_id, bid_amount;
@@ -92,16 +127,35 @@ int make_bid_scan() {
     return 0;
 }
 
+/**
+ * This function is used to print all users.
+ * It calls the print_users function.
+ *
+ * @return Returns an integer status code.
+ */
 int print_all_users(){
     print_users();
     return 0;
 }
 
+/**
+ * This function is used to print all unexpired items.
+ * It calls the print_unexpired_items function.
+ *
+ * @return Returns an integer status code.
+ */
 int print_all_unexpired_items(){
     print_unexpired_items();
     return 0;
 }
 
+/**
+ * This function is used to scan the details of an item to be auctioned.
+ * It scans the seller name, title, description, location, category, quantity, and end time.
+ * It then calls the add_item function with the scanned details.
+ *
+ * @return Returns an integer status code.
+ */
 int auctionise_item_scan(){
     char item_title[30];
     char item_description[100];
@@ -133,11 +187,23 @@ int auctionise_item_scan(){
     return 0;
 }
 
+/**
+ * This function is used to display the points of the current user.
+ * The specific implementation depends on the structure of the user.
+ *
+ * @return Returns an integer status code.
+ */
 int display_points(){
     printf("You have %d points\n\n", current_user->points);
     return 0;
 }
 
+/**
+ * This function is used to print the auctions on which the current user has placed bids.
+ * It retrieves all items on which the current user has placed bids and iterates over them.
+ * For each item, it checks if the auction has ended and if the current user has the highest bid.
+ * It then prints the item details along with the auction status and the highest bid details.
+ */
 void print_bidding_auctions(){
     struct Item_Node* index = get_items_with_bids_by_user(current_user->username);
     printf("Auctions with your bids\n");
@@ -162,6 +228,13 @@ void print_bidding_auctions(){
     }
 
 }
+
+/**
+ * This function is used to print the auctions created by the current user.
+ * It retrieves all items created by the current user and iterates over them.
+ * For each item, it checks if the auction has ended and if there are any bids.
+ * It then prints the item details along with the auction status and the highest bid details.
+ */
 void print_own_auctions(){
     struct Item_Node* own_auctions = get_items_from_user(current_user->username);
     printf("Your auctions:\n");
@@ -195,7 +268,12 @@ void print_own_auctions(){
     }
 }
 
-
+/**
+ * This function is used to print the auctions and bids of the current user.
+ * The specific implementation depends on the structure of the auctions and bids.
+ *
+ * @return Returns an integer status code.
+ */
 int my_auction_and_bids(){
 
     update_claim_status();

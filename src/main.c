@@ -9,8 +9,8 @@
 
 int main(void){
 
+    //runs the program
     start_application();
-
 
     return 0;
 }

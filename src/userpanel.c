@@ -11,7 +11,10 @@
 #include "auction.h"
 #include "interface.h"
 
-
+/**
+ * This function is used to display the auction menu.
+ * It displays the options available to the user, such as listing items, making a bid, auctioning an item, displaying points, and viewing their auctions/bids.
+ */
 int auktion_menu() {
     struct menu_item menu[5] = {
             {"List items", &print_all_unexpired_items},
@@ -24,6 +27,10 @@ int auktion_menu() {
     return 0;
 }
 
+/**
+ * This function is used to display the user menu.
+ * It displays the options available to the user.
+ */
 void user_menu() {
     struct menu_item menu[1] = {
 //            {"Sell food", &sell_food},
@@ -34,6 +41,14 @@ void user_menu() {
     printscan_menu(menu, 1);
 }
 
+/**
+ * This function is used to display the admin menu.
+ * It creates an array of menu_item structures, each of which consists of a string and a function pointer.
+ * The function then calls printscan_menu with this array and its size.
+ * The printscan_menu function prints each menu item and scans the user's choice, then calls the function corresponding to the user's choice.
+ *
+ * @return Returns 0 after the menu has been displayed and the user's choice has been processed.
+ */
 int admin_menu() {
     struct menu_item menu[4] = {
 //            {"Sell food", &sell_food},
@@ -47,7 +62,10 @@ int admin_menu() {
     return 0;
 }
 
-
+/**
+ * This function is used to display the menu for users who are not logged in.
+ * It displays the options to login or create a new user.
+ */
 void not_logged_in_menu() {
     const int menu_size = 1;
     struct menu_item menu[2] = {
@@ -57,7 +75,10 @@ void not_logged_in_menu() {
     printscan_menu(menu, 2);
 }
 
-
+/**
+ * This function is used to start the application.
+ * It loads the data from the CSV files, displays the login menu, and then displays the appropriate menu based on the user's role.
+ */
 void start_application(){
     load_data_from_csv();
 

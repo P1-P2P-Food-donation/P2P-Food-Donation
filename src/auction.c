@@ -6,7 +6,13 @@
 #include "stdio.h"
 #include "strings.h"
 
-// Returns the winning bid
+/**
+ * This function is used to get the highest bid for a specific item.
+ * It iterates over the linked list of bids and returns the bid with the highest amount for the specified item.
+ *
+ * @param item_id The ID of the item for which the highest bid is to be retrieved.
+ * @return Returns a pointer to the highest bid for the specified item.
+ */
 struct bid* get_highest_bid(int item_id){
     struct Bid_Node* index = get_bids_with_id(item_id);
     struct bid* champion = NULL;
@@ -20,7 +26,20 @@ struct bid* get_highest_bid(int item_id){
     return champion;
 }
 
-// Returns 1 if bid was placed successfully or 0 if an error occurred
+/**
+ * This function is used to place a bid on an item.
+ * It first checks if the bid is higher than the current highest bid.
+ * If the user has already placed a bid, it lowers the required amount.
+ * If the new bid is lower than the existing bid, it returns an error.
+ * It then checks if the user has enough points to place the bid.
+ * If the user has enough points, it updates the user's points and the bid file.
+ * If the user doesn't have enough points, it returns an error.
+ *
+ * @param item_id The ID of the item on which the bid is being placed.
+ * @param bidder The user who is placing the bid.
+ * @param bid_amount The amount of the bid being placed.
+ * @return Returns 1 if the bid was placed successfully, 0 otherwise.
+ */
 int make_bid(int item_id, struct user* bidder, int bid_amount){
 
     if (bid_amount < 0){

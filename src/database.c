@@ -415,6 +415,13 @@ void add_item(char seller_name[], char title[], char description[], char locatio
     items = new_node;
 }
 
+/**
+ * This function is used to get an item by its ID.
+ * It iterates over the linked list of items and returns the item with the matching ID.
+ *
+ * @param item_id The ID of the item to be retrieved.
+ * @return Returns a pointer to the item if found, NULL otherwise.
+ */
 struct item* get_item_from_id(int item_id){
     struct Item_Node* index = items;
     while(index != NULL){
@@ -426,6 +433,14 @@ struct item* get_item_from_id(int item_id){
     return NULL;
 }
 
+/**
+ * This function is used to get all items on which a specific user has placed a bid.
+ * It iterates over the linked list of bids and for each bid placed by the user, it adds the item to a new linked list.
+ * The new linked list is returned.
+ *
+ * @param username The username of the user whose items are to be retrieved.
+ * @return Returns a linked list of items on which the user has placed a bid.
+ */
 struct Item_Node* get_items_with_bids_by_user(char username[]){
 
     struct Item_Node* i = NULL;
@@ -447,6 +462,12 @@ struct Item_Node* get_items_with_bids_by_user(char username[]){
     return i;
 }
 
+/**
+ * This function is used to update the claim status of all bids.
+ * It iterates over the linked list of items and for each item, it checks if the auction has expired.
+ * If the auction has expired, it iterates over the linked list of bids for that item and sets the claim status to 1.
+ * It then updates the bids.csv file.
+ */
 void update_claim_status(){
 
     struct Item_Node* i = items;
@@ -468,6 +489,12 @@ void update_claim_status(){
     update_bid_file();
 }
 
+/**
+ * This function is used to free the memory allocated for an item node.
+ * It iterates over the linked list of item nodes and frees each node.
+ *
+ * @param i The head of the linked list of item nodes to be freed.
+ */
 void free_item_node(struct Item_Node* i){
     while(i != NULL){
         struct Item_Node* temp_i = i->next;
