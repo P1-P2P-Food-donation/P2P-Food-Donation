@@ -2,14 +2,11 @@
 // Created by Jeppe Nyland Mortensen on 29/11/2023.
 //
 
-#include "stddef.h"
-#include "stdlib.h"
-#include "stdio.h"
+
 #include "interface.h"
-//#include "buy_and_sell.h"
 #include "login.h"
 #include "auction.h"
-#include "interface.h"
+
 
 
 
@@ -109,7 +106,7 @@ void not_logged_in_menu() {
 
 /**
  * This function is used to start the application.
- * It loads the data from the CSV files, displays the login menu, and then displays the appropriate menu based on the user's role.
+ * It loads the data from the CSV files, displays the not logged in login menu.
  */
 void start_application(){
     load_data_from_csv();
