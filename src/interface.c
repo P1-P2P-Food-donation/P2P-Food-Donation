@@ -27,9 +27,8 @@ void clear_input_buffer(){
  *
  * @param menu The array of menu items.
  * @param size The size of the array.
- * @return Returns an integer status code.
  */
-int printscan_menu(struct menu_item menu[], int size) {
+void printscan_menu(struct menu_item menu[], int size) {
     int valid_choice;
     do {
         int valg;
@@ -44,12 +43,9 @@ int printscan_menu(struct menu_item menu[], int size) {
         valid_choice = (valg >= 1 && valg <= size);
 
         if (valid_choice) {
-            if(menu[valg-1].function()){
-                return 0;
-            };
-
+            menu[valg-1].function();
         } else if (valg == size + 1){
-            return 1;
+            return;
         }
         else {
             printf("Invalid choice! Try again\n");
@@ -60,11 +56,9 @@ int printscan_menu(struct menu_item menu[], int size) {
 /**
  * This function is used to scan the ID of an item to be deleted.
  * It then calls the delete_item function with the scanned ID.
- *
- * @return Returns an integer status code.
  */
-int delete_item_scan() {
-    int id = 0;
+void delete_item_scan() {
+    int id;
 
     printf("Type the ID of the item you want to delete:\n");
     scanf("%d", &id);
@@ -80,10 +74,8 @@ int delete_item_scan() {
 /**
  * This function is used to scan the username of a user to be deleted.
  * It then calls the delete_user function with the scanned username.
- *
- * @return Returns an integer status code.
  */
-int delete_user_scan() {
+void delete_user_scan() {
     char username[USERNAME_SIZE];
 
     printf("Type the username you want to delete:\n");
@@ -95,17 +87,15 @@ int delete_user_scan() {
     } else {
         printf("User %s does not exist!\n", username);
     }
-    return 0;
+    return;
 }
 
 /**
  * This function is used to scan the details of a bid to be placed.
  * It scans the item ID, the bidder, and the bid amount.
  * It then calls the make_bid function with the scanned details.
- *
- * @return Returns an integer status code.
  */
-int make_bid_scan() {
+void make_bid_scan() {
 
     int item_id, bid_amount;
 
@@ -124,39 +114,33 @@ int make_bid_scan() {
 
     make_bid(item_id, current_user, bid_amount);
 
-    return 0;
+    return;
 }
 
 /**
  * This function is used to print all users.
  * It calls the print_users function.
- *
- * @return Returns an integer status code.
  */
-int print_all_users(){
+void print_all_users(){
     print_users();
-    return 0;
+    return;
 }
 
 /**
  * This function is used to print all unexpired items.
  * It calls the print_unexpired_items function.
- *
- * @return Returns an integer status code.
  */
-int print_all_unexpired_items(){
+void print_all_unexpired_items(){
     print_unexpired_items();
-    return 0;
+    return;
 }
 
 /**
  * This function is used to scan the details of an item to be auctioned.
  * It scans the seller name, title, description, location, category, quantity, and end time.
  * It then calls the add_item function with the scanned details.
- *
- * @return Returns an integer status code.
  */
-int auctionise_item_scan(){
+void auctionise_item_scan(){
     char item_title[30];
     char item_description[100];
     char item_location[100];
@@ -184,18 +168,16 @@ int auctionise_item_scan(){
     add_item(current_user->username, item_title, item_description, item_location, category - 1, quantity, t);
 
     printf("\nYour item has been added to the auction. The auction wil expire in 6 hours\n");
-    return 0;
+    return;
 }
 
 /**
  * This function is used to display the points of the current user.
  * The specific implementation depends on the structure of the user.
- *
- * @return Returns an integer status code.
  */
-int display_points(){
+void display_points(){
     printf("You have %d points\n\n", current_user->points);
-    return 0;
+    return;
 }
 
 /**
@@ -271,16 +253,11 @@ void print_own_auctions(){
 /**
  * This function is used to print the auctions and bids of the current user.
  * The specific implementation depends on the structure of the auctions and bids.
- *
- * @return Returns an integer status code.
  */
-int my_auction_and_bids(){
-
+void my_auction_and_bids(){
     update_claim_status();
     print_own_auctions();
     printf("\n");
     print_bidding_auctions();
     printf("\n");
-
-    return 0;
 }

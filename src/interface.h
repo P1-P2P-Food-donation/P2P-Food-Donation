@@ -7,19 +7,19 @@
 
 struct menu_item {
     char* string;
-    int (*function)();
+    void (*function)();
 };
 int printMessage();
 
-int printscan_menu(struct menu_item menu[], int size);
+void printscan_menu(struct menu_item menu[], int size);
 
-int delete_user_scan();
-int delete_item_scan();
-int make_bid_scan();
-int auctionise_item_scan();
-int print_all_users();
-int print_all_unexpired_items();
-int my_auction_and_bids();
-int display_points();
+void delete_user_scan();
+void delete_item_scan();
+void make_bid_scan();
+void auctionise_item_scan();
+void print_all_users();
+void print_all_unexpired_items();
+void my_auction_and_bids();
+void display_points();
 
 #endif //P2P_FOOD_DONATION_INTERFACE_H
