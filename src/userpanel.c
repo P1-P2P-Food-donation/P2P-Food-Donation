@@ -17,7 +17,7 @@
  * This function is used to display the auction menu.
  * It displays the options available to the user, such as listing items, making a bid, auctioning an item, displaying points, and viewing their auctions/bids.
  */
-void auktion_menu() {
+void auction_menu() {
     struct menu_item menu[5] = {
             {"List items", &print_all_unexpired_items},
             {"Make a bid", &make_bid_scan},
@@ -36,7 +36,7 @@ void user_menu() {
     struct menu_item menu[1] = {
 //            {"Sell food", &sell_food},
 //            {"Buy food", &buy_food},
-            {"Auction menu", &auktion_menu}
+            {"Auction menu", &auction_menu}
     };
 
     printscan_menu(menu, 1);
@@ -52,7 +52,7 @@ void admin_menu() {
     struct menu_item menu[4] = {
 //            {"Sell food", &sell_food},
 //            {"Buy food", &buy_food},
-            {"Auction menu", &auktion_menu},
+            {"Auction menu", &auction_menu},
             {"List users", &print_all_users},
             {"Delete a user", &delete_user_scan},
             {"Delete a item", &delete_item_scan}
