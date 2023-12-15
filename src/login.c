@@ -67,6 +67,7 @@ int create_user() {
     // Add user to the database
     add_user(username, password, phone_number, points, role);
 
+    printf("User registered successfully\n\n");
     current_user = get_user(username);
     return 1;
 }
