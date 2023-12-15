@@ -550,7 +550,8 @@ struct Item_Node* get_items_from_user(char username[]){
  *
  * @param item_id The ID of the item to be deleted.
  * @return Returns 1 if the item was deleted successfully, 0 otherwise.
- */int delete_item(int item_id){
+ */
+ int delete_item(int item_id){
     struct Item_Node* index = items;
     struct Item_Node* previous_index = NULL;
     while (index != NULL){
