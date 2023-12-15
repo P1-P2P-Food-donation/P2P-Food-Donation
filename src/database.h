@@ -10,7 +10,7 @@
 #define USERNAME_SIZE 30
 
 enum user_role{role_user, role_admin};
-enum item_category{fruit, vegetable, meat};
+enum item_category{fruit, vegetable, meat, leftovers, dairy, other};
 
 struct bid{
     int item_id;
