@@ -478,10 +478,7 @@ void update_claim_status(){
             struct bid* highest_bid = get_highest_bid(i->data.id);
             struct Bid_Node* b = get_bids_with_id(i->data.id);
 
-            while(b != NULL){
-                if(b->data->claimed){
-                    break;
-                }
+            while(b != NULL && !b->data->claimed){
                 if(strcmp(highest_bid->user->username, b->data->user->username) == 0){
                     i->data.owner->points += highest_bid->amount;
                 } else {
