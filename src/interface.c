@@ -96,6 +96,7 @@ void delete_user_scan() {
  * It then calls the make_bid function with the scanned details.
  */
 void make_bid_scan() {
+    update_claim_status();
 
     int item_id, bid_amount;
 
@@ -132,7 +133,6 @@ void print_all_users(){
  */
 void print_all_unexpired_items(){
     print_unexpired_items();
-    return;
 }
 
 /**
@@ -176,6 +176,7 @@ void auctionise_item_scan(){
  * The specific implementation depends on the structure of the user.
  */
 void display_points(){
+    update_claim_status();
     printf("You have %d points\n\n", current_user->points);
     return;
 }
