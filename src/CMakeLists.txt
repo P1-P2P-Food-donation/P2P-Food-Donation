@@ -20,6 +20,7 @@ target_link_libraries(interface login)
 target_link_libraries(interface auction)
 target_link_libraries(interface database)
 
+
 #misc
 target_link_libraries(login database)
 target_link_libraries(userpanel interface)
