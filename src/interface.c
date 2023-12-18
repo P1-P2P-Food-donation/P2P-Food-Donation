@@ -209,6 +209,7 @@ void print_bidding_auctions(){
     } else {
         printf("*You haven't bid on any items*\n");
     }
+    free_item_node(index);
 
 }
 
@@ -245,10 +246,10 @@ void print_own_auctions(){
             }
             own_auctions = own_auctions->next;
         }while(own_auctions != NULL);
-        free(own_auctions);
     } else {
         printf("*You don't have any auctions*\n");
     }
+    free_item_node(own_auctions);
 }
 
 /**

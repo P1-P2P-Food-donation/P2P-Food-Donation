@@ -78,6 +78,7 @@ void update_bid_file();
 void print_bids();
 struct Bid_Node* get_all_bids();
 void update_claim_status();
+void free_bid_node(struct Bid_Node* i);
 
 //General
 void load_data_from_csv();

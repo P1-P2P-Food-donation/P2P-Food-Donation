@@ -23,6 +23,7 @@ struct bid* get_highest_bid(int item_id){
         }
         index = index->next;
     }
+    free_bid_node(index);
     return champion;
 }
 
@@ -76,6 +77,8 @@ int make_bid(int item_id, struct user* bidder, int bid_amount){
         }
         linked_list = linked_list->next;
     }
+
+    free_bid_node(linked_list);
 
     //Check if the bidder has the points needed
     if(required_amount > bidder->points){
