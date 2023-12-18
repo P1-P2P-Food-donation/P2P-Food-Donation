@@ -148,7 +148,7 @@ void auctionise_item_scan(){
     int quantity;
     struct timestamp t;
 
-    printf("Please dont use dots instead of commas and avoid language specific characters\n");
+    printf("Please use dots instead of commas and avoid language specific characters\n");
 
     clear_input_buffer();
     printf("Item title: ");

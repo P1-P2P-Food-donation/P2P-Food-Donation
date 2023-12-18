@@ -47,8 +47,6 @@ void user_menu() {
  */
 void admin_menu() {
     struct menu_item menu[4] = {
-//            {"Sell food", &sell_food},
-//            {"Buy food", &buy_food},
             {"Auction menu", &auction_menu},
             {"List users", &print_all_users},
             {"Delete a user", &delete_user_scan},
