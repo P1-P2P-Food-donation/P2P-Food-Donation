@@ -160,7 +160,7 @@ void auctionise_item_scan(){
     printf("\nItem location: ");
     scanf("%[^\n]", item_location);
     clear_input_buffer();
-    printf("\nCategory([1]fruit, [2]vegetable, [3]meat): ");
+    printf("\nCategory([1]fruit, [2]vegetable, [3]meat, [4]leftovers, [5]dairy, [6]other): ");
     scanf("%d", &category);
     printf("\nQuantity: ");
     scanf("%d", &quantity);
