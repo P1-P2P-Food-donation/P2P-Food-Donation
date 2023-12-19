@@ -123,8 +123,7 @@ void make_bid_scan() {
  * It calls the print_users function.
  */
 void print_all_users(){
-    print_users();
-    return;
+    print_users():
 }
 
 /**
@@ -168,7 +167,6 @@ void auctionise_item_scan(){
     add_item(current_user->username, item_title, item_description, item_location, category - 1, quantity, t);
 
     printf("\nYour item has been added to the auction. The auction wil expire in 6 hours\n");
-    return;
 }
 
 /**
@@ -178,7 +176,6 @@ void auctionise_item_scan(){
 void display_points(){
     update_claim_status();
     printf("You have %d points\n\n", current_user->points);
-    return;
 }
 
 /**

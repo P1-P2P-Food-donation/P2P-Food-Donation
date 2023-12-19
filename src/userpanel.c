@@ -31,8 +31,6 @@ void auction_menu() {
  */
 void user_menu() {
     struct menu_item menu[1] = {
-//            {"Sell food", &sell_food},
-//            {"Buy food", &buy_food},
             {"Auction menu", &auction_menu}
     };
 
@@ -47,8 +45,6 @@ void user_menu() {
  */
 void admin_menu() {
     struct menu_item menu[4] = {
-//            {"Sell food", &sell_food},
-//            {"Buy food", &buy_food},
             {"Auction menu", &auction_menu},
             {"List users", &print_all_users},
             {"Delete a user", &delete_user_scan},
@@ -96,7 +92,6 @@ void register_handler(){
  * It displays the options to login or create a new user.
  */
 void not_logged_in_menu() {
-    const int menu_size = 1;
     struct menu_item menu[2] = {
             {"Login", &login_handler},
             {"Create user", &register_handler}

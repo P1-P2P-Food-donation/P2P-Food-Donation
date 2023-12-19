@@ -64,6 +64,11 @@ void import_user_file(){
 void save_user_to_file(struct user u){
     FILE* file = fopen("users.csv", "a"); //Open file in append mode
 
+    if(file == NULL){
+        printf("Couldn't open users.csv");
+        exit(EXIT_FAILURE);
+    }
+
     fprintf(file, "%s, %s, %s, %d, %d\n", u.username, u.password, u.phone_number, u.points, u.role); //Write user to file
 
     fclose(file); //Close file
@@ -145,6 +150,12 @@ void add_user(char* username, char* password, char* phone_number, int points, en
 void update_user_file(){
     //Clear file
     FILE* file = fopen("users.csv", "w");
+
+    if(file == NULL){
+        printf("Couldn't open users.csv");
+        exit(EXIT_FAILURE);
+    }
+
     fclose(file);
 
     //Loop through linked list and add every node to file
@@ -280,6 +291,11 @@ void import_item_file(){
  */
 void save_item_to_file(struct item i){
     FILE* file = fopen("items.csv", "a"); //Open file in append mode
+
+    if(file == NULL){
+        printf("Couldn't open items.csv");
+        exit(EXIT_FAILURE);
+    }
 
     fprintf(file, "%d, %s, %s, %s, %s, %d, %d, %d:%d:%d, %d/%d/%d\n", i.id, i.owner->username, i.title, i.description, i.location, i.category, i.quantity, i.timestamp.hour, i.timestamp.minute, i.timestamp.seconds, i.timestamp.day, i.timestamp.month, i.timestamp.year);
 
@@ -516,6 +532,12 @@ void free_item_node(struct Item_Node* i){
 void update_item_file(){
     //Clear file
     FILE* file = fopen("items.csv", "w");
+
+    if(file == NULL){
+        printf("Couldn't open items.csv");
+        exit(EXIT_FAILURE);
+    }
+
     fclose(file);
 
     //Loop through linked list and add every node to file
@@ -639,6 +661,11 @@ void import_bid_file(){
 void save_bid_to_file(struct bid b){
     FILE* file = fopen("bids.csv", "a"); //Open file in append mode
 
+    if(file == NULL){
+        printf("Couldn't open bids.csv");
+        exit(EXIT_FAILURE);
+    }
+
     fprintf(file, "%d, %s, %d, %d\n", b.item_id, b.user->username, b.amount, b.claimed);
 
     fclose(file); //Close file
@@ -718,6 +745,12 @@ struct Bid_Node* get_bids_with_id(int item_id){
 void update_bid_file(){
     //Clear file
     FILE* file = fopen("bids.csv", "w");
+
+    if(file == NULL){
+        printf("Couldn't open bids.csv");
+        exit(EXIT_FAILURE);
+    }
+
     fclose(file);
 
     //Loop through linked list and add every node to file
