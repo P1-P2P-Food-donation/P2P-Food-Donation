@@ -147,7 +147,7 @@ void auctionise_item_scan(){
     int quantity;
     struct timestamp t;
 
-    printf("Please dont use dots instead of commas and avoid language specific characters\n");
+    printf("Please use dots instead of commas and avoid language specific characters\n");
 
     clear_input_buffer();
     printf("Item title: ");
@@ -159,7 +159,7 @@ void auctionise_item_scan(){
     printf("\nItem location: ");
     scanf("%[^\n]", item_location);
     clear_input_buffer();
-    printf("\nCategory([1]fruit, [2]vegetable, [3]meat): ");
+    printf("\nCategory([1]fruit, [2]vegetable, [3]meat, [4]leftovers, [5]dairy, [6]other): ");
     scanf("%d", &category);
     printf("\nQuantity: ");
     scanf("%d", &quantity);
@@ -206,6 +206,7 @@ void print_bidding_auctions(){
     } else {
         printf("*You haven't bid on any items*\n");
     }
+    free_item_node(index);
 
 }
 
@@ -242,10 +243,10 @@ void print_own_auctions(){
             }
             own_auctions = own_auctions->next;
         }while(own_auctions != NULL);
-        free(own_auctions);
     } else {
         printf("*You don't have any auctions*\n");
     }
+    free_item_node(own_auctions);
 }
 
 /**

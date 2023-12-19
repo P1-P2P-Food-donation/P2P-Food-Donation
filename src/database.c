@@ -844,6 +844,20 @@ void delete_bid_username(char username[]){
     update_bid_file();
 }
 
+/**
+ * This function is used to free the memory allocated for a bid node.
+ * It iterates over the linked list of bid nodes and frees each node.
+ *
+ * @param i The head of the linked list of item nodes to be freed.
+ */
+void free_bid_node(struct Bid_Node* i){
+    while(i != NULL){
+        struct Bid_Node* temp_i = i->next;
+        free(i);
+        i = temp_i;
+    }
+}
+
 /* - - - - - - - GENERAL - - - - - - - - -*/
 
 /**
