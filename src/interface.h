@@ -9,10 +9,9 @@ struct menu_item {
     char* string;
     void (*function)();
 };
+
 int printMessage();
-
 void printscan_menu(struct menu_item menu[], int size);
-
 void delete_user_scan();
 void delete_item_scan();
 void make_bid_scan();
