@@ -87,7 +87,6 @@ void delete_user_scan() {
     } else {
         printf("User %s does not exist!\n", username);
     }
-    return;
 }
 
 /**
@@ -100,7 +99,7 @@ void make_bid_scan() {
 
     int item_id, bid_amount;
 
-    printf("Enter the item you want to bid on:\n");
+    printf("Enter the id on the item you want to bid on:\n");
     scanf("%d", &item_id);
 
     struct bid* highest_bid = get_highest_bid(item_id);
@@ -114,8 +113,6 @@ void make_bid_scan() {
     scanf("%d", &bid_amount);
 
     make_bid(item_id, current_user, bid_amount);
-
-    return;
 }
 
 /**
@@ -123,7 +120,7 @@ void make_bid_scan() {
  * It calls the print_users function.
  */
 void print_all_users(){
-    print_users():
+    print_users();
 }
 
 /**

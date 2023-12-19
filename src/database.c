@@ -347,6 +347,15 @@ void print_unexpired_items(){
             case(vegetable):
                 strcpy(category_string, "Vegetable");
                 break;
+            case(leftovers):
+                strcpy(category_string, "Leftovers");
+                break;
+            case(dairy):
+                strcpy(category_string, "Dairy");
+                break;
+            case(other):
+                strcpy(category_string, "Other");
+                break;
         }
 
         printf("ID: %d, Username: %s, Title: %s, Description: %s, Category: %s, Auction expiration: ", rest_items->data.id, rest_items->data.owner->username, rest_items->data.title, rest_items->data.description, category_string);
