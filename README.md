@@ -17,15 +17,15 @@ When you need to input data into the program, it will look like the following, t
 
 Please use dots instead of commas and avoid language specific characters
 
-Item title:Potato
+Item title:<span style="color:lightgreen;">Potato</span>
 
-Item description:Good old Potato
+Item description:<span style="color:lightgreen;">Good old Potato</span>
 
-Item location:Aalborgvej 34
+Item location:<span style="color:lightgreen;">Aalborgvej 34</span>
 
-Category([1]fruit, [2]vegetable, [3]meat, [4]leftovers, [5]dairy, [6]other):2
+Category([1]fruit, [2]vegetable, [3]meat, [4]leftovers, [5]dairy, [6]other):<span style="color:lightgreen;">2</span>
 
-Quantity:15
+Quantity:<span style="color:lightgreen;">15</span>
 
 In this menu you will be represented with a prompt ending with semicolon and after the semicolon you will need to write your answer to the prompt and press enter to go to the next one. When entering data into the program it does not work with language specific characters and the program does not work with commas so, please use dots instead. As seen in the category section above you will be required to enter a number corresponding to the category you would like to enter. 
 
