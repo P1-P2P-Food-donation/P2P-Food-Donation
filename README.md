@@ -1,4 +1,19 @@
 # P2P-Food-Donation
+
+## Compiling of program for Windows
+
+### GCC Compiler
+First step in compiling the program is making sure you have a compiler for C installed, this can be done by opening power shell and typing in gcc. If the command is not known by the system, there are no compiler installed. A guide to how to install a GCC compiler are provided in this [link]( https://www.youtube.com/watch?v=GxFiUEO_3zM&ab_channel=SavvyNik)
+
+### Compiling
+First thing to do to compile the program is moving power shell into the correct directory and this is done with the command cd followed by path to the directory, it shall be the src directory that be linked to. This could look like this "cd R:\ClionProjects\P2P-Food-Donation\src"
+
+After the correct directory is linked to, the following command is used "gcc -o main main.c auction.c database.c interface.c login.c timestamp.c userpanel.c" this command will compile the program into a .exe program with the name main.exe.
+
+Next step is to move the program by dragging it or copying it into another directory with the data files, this can easily be done by moving the .exe program into the directory "data" that is provided in the directory P2P-Food-Donation
+
+After this the program shall be ready to launched by double clicking on it in the data directory.
+
 ## Menus
 The menus of the program will be displayed as seen below.
 
