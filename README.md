@@ -15,19 +15,13 @@ Next step is to move the program by dragging it or copying it into another direc
 After this the program shall be ready to launched by double clicking on it in the data directory.
 
 ## Menus
-The menus of the program will be displayed as seen below.
+An exsample of a menus of the program will be displayed as seen below.
 
 [1] Auction menu
 
-[2] List users
+[2] Exit
 
-[3] Delete a user
-
-[4] Delete a item
-
-[5] Exit
-
-To enter the next menu or action you will need to write the corresponding number and press enter. this means to enter the auction menu you need to press 1 and then enter. The last option in all menus is always Exit and will close the program.
+To enter the next menu or action you will need to write the corresponding number and press enter. This means to enter the auction menu you need to press 1 and then enter. The last option in all menus is always Exit and will close the program.
 When you need to input data into the program, it will look like the following, that are taken from Auction item:
 
 Please use dots instead of commas and avoid language specific characters
@@ -53,6 +47,7 @@ As well does the program does not work the commas so, please use dots instead, t
 
 ### Item ID
 When trying to bid on an item the program asks for the ID of the item you would like to bid on, this ID can be found under the menu “List items”, the program does not handle it well if you input anything else here then a number. 
+
 ## Users available from the start of the program
 The program has 2 types of users, and these are admins and users, below are provided a username and password for each type of user. When entering the username and password the program is upper and lower case sensitive.
 
