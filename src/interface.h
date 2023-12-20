@@ -4,12 +4,13 @@
 
 #ifndef P2P_FOOD_DONATION_INTERFACE_H
 #define P2P_FOOD_DONATION_INTERFACE_H
-
+// data strunctures
 struct menu_item {
     char* string;
     void (*function)();
 };
 
+// function prototypes
 int printMessage();
 void printscan_menu(struct menu_item menu[], int size);
 void delete_user_scan();

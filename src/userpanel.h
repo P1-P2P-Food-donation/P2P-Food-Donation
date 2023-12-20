@@ -4,7 +4,7 @@
 #ifndef MERGESORT_USERPANEL_H
 #define MERGESORT_USERPANEL_H
 
-//cant find function struct menu_item* create_userpanel();
+// function prototypes
 struct menu_item* create_userpanel();
 void not_logged_in_menu();
 void user_menu();
