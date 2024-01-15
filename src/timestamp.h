@@ -4,7 +4,7 @@
 
 #ifndef P2P_FOOD_DONATION_TIME_H
 #define P2P_FOOD_DONATION_TIME_H
-
+// data strunctures
 struct timestamp{
     int year;
     int month;
@@ -14,6 +14,7 @@ struct timestamp{
     int seconds;
 };
 
+// function prototypes
 struct timestamp timestamp_now();
 struct timestamp create_timestamp(int second, int minute, int hour, int day, int month, int year);
 void print_timestamp(struct timestamp timestamp);

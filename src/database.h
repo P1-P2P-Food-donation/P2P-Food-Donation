@@ -4,14 +4,17 @@
 
 #ifndef P2P_FOOD_DONATION_DATABASE_H
 #define P2P_FOOD_DONATION_DATABASE_H
-
+// #includes
 #include "timestamp.h"
 
+// constants
 #define USERNAME_SIZE 30
 
+// enums
 enum user_role{role_user, role_admin};
-enum item_category{fruit, vegetable, meat};
+enum item_category{fruit, vegetable, meat, leftovers, dairy, other};
 
+// data strunctures
 struct bid{
     int item_id;
     struct user* user;
@@ -54,6 +57,7 @@ struct Item_Node {
     struct Item_Node* next;
 };
 
+// function prototypes
 //Items
 void print_items();
 void print_unexpired_items();
@@ -78,6 +82,7 @@ void update_bid_file();
 void print_bids();
 struct Bid_Node* get_all_bids();
 void update_claim_status();
+void free_bid_node(struct Bid_Node* i);
 
 //General
 void load_data_from_csv();
