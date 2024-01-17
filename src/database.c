@@ -475,8 +475,9 @@ struct Item_Node* get_items_with_bids_by_user(char username[]){
     while(index != NULL){
 
         if(strcmp(index->data->user->username, username) == 0 ){
+            //printf("%d", bids->data->item_id);
             struct Item_Node* new_node = (struct Item_Node*) malloc(sizeof(struct Item_Node));
-            new_node->data = *get_item_from_id(bids->data->item_id);
+            new_node->data = *get_item_from_id(index->data->item_id);
             new_node->next = i;
             i = new_node;
         }
